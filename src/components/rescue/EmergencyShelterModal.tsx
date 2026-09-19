@@ -62,8 +62,8 @@ export const EmergencyShelterModal: React.FC<EmergencyShelterModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-sm animate-fade-in text-left">
-      <div className="bg-stone-900 border border-stone-700/80 text-white rounded-3xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-8 bg-black/75 backdrop-blur-md animate-fade-in text-left overflow-y-auto">
+      <div className="bg-stone-900 border border-stone-700/80 text-white rounded-3xl max-w-4xl w-full max-h-[86vh] my-auto flex flex-col shadow-2xl overflow-hidden">
         
         {/* Modal Header */}
         <div className="p-5 sm:p-6 border-b border-stone-800 bg-gradient-to-r from-[#3a150b] via-[#2c1209] to-[#1e0a04] flex items-start justify-between gap-4 shrink-0">
@@ -170,60 +170,62 @@ export const EmergencyShelterModal: React.FC<EmergencyShelterModalProps> = ({
               </div>
 
               {/* Shelter Cards List */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {filteredShelters.map((shelter) => (
                   <div
                     key={shelter.id}
-                    className="bg-stone-800/80 border border-stone-700 rounded-2xl p-4 sm:p-5 flex flex-col justify-between hover:border-orange-500/50 transition shadow-sm space-y-4"
+                    className="bg-stone-800/90 border border-stone-700/80 rounded-2xl p-5 sm:p-6 flex flex-col justify-between hover:border-orange-500/50 transition shadow-sm space-y-5"
                   >
-                    <div className="space-y-3">
+                    <div className="space-y-4">
                       {/* Top Badges */}
                       <div className="flex flex-wrap items-center justify-between gap-2">
                         <div className="flex items-center gap-1.5">
-                          <span className="px-2 py-0.5 rounded-md bg-stone-700 text-[10px] font-bold text-stone-200 uppercase">
+                          <span className="px-2.5 py-1 rounded-lg bg-stone-700 text-[10px] font-bold text-stone-200 uppercase tracking-wide">
                             {translateCity(shelter.city, language)}
                           </span>
-                          <span className="text-xs text-stone-400">• {translateDistrict(shelter.district, language)}</span>
+                          <span className="text-xs text-stone-400 font-medium">• {translateDistrict(shelter.district, language)}</span>
                         </div>
 
-                        <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-1.5">
                           {shelter.is24_7 && (
-                            <span className="px-2 py-0.5 rounded-md bg-rose-950 text-rose-300 border border-rose-800 text-[10px] font-bold">
+                            <span className="px-2.5 py-1 rounded-lg bg-rose-950 text-rose-300 border border-rose-800/80 text-[10px] font-bold">
                               24/7
                             </span>
                           )}
-                          <span className="px-2 py-0.5 rounded-md bg-stone-900 text-stone-400 border border-stone-700 text-[10px]">
+                          <span className="px-2.5 py-1 rounded-lg bg-stone-900 text-stone-400 border border-stone-700 text-[10px] font-medium">
                             {t('emergency.nonProfitBadge')}
                           </span>
                         </div>
                       </div>
 
                       {/* Shelter Title */}
-                      <div>
-                        <h3 className="text-base font-bold text-white group-hover:text-orange-300">
+                      <div className="space-y-1">
+                        <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-orange-300 leading-snug">
                           {translateShelterName(shelter.name, language)}
                         </h3>
-                        <p className="text-[11px] text-stone-400 flex items-center gap-1 mt-0.5">
+                        <p className="text-xs text-stone-400 flex items-center gap-1.5 pt-0.5">
                           <Clock className="w-3.5 h-3.5 text-orange-400 shrink-0" />
                           <span>{language === 'en' ? (shelter.operatingHoursEn || shelter.operatingHours) : shelter.operatingHours}</span>
                         </p>
                       </div>
 
                       {/* Address */}
-                      <div className="p-2.5 rounded-xl bg-stone-900/90 border border-stone-700/60 space-y-1">
-                        <div className="text-[10px] uppercase font-bold text-stone-400 flex items-center gap-1">
-                          <MapPin className="w-3 h-3 text-rose-400 shrink-0" />
+                      <div className="p-3 rounded-xl bg-stone-950/70 border border-stone-800 space-y-1">
+                        <div className="text-[10px] uppercase font-bold text-stone-400 flex items-center gap-1.5">
+                          <MapPin className="w-3.5 h-3.5 text-rose-400 shrink-0" />
                           <span>{t('emergency.addressLabel')}</span>
                         </div>
-                        <p className="text-xs text-stone-200 font-medium leading-relaxed">
+                        <p className="text-xs text-stone-200 font-medium leading-relaxed pl-5">
                           {translateAddress(shelter.address, language)}
                         </p>
                       </div>
 
                       {/* Instructions for Finder */}
-                      <div className="text-[11px] text-stone-300 leading-normal bg-stone-950/40 p-2.5 rounded-xl border border-stone-800">
-                        <strong className="text-amber-300">{t('emergency.finderNote')} </strong>
-                        {language === 'en' ? (shelter.instructionsForFinderEn || shelter.instructionsForFinder) : shelter.instructionsForFinder}
+                      <div className="text-xs text-stone-300 leading-relaxed bg-amber-950/20 p-3 rounded-xl border border-amber-900/40 space-y-1">
+                        <strong className="text-amber-300 block font-bold">{t('emergency.finderNote')}</strong>
+                        <p className="text-stone-300 text-[11px] leading-relaxed">
+                          {language === 'en' ? (shelter.instructionsForFinderEn || shelter.instructionsForFinder) : shelter.instructionsForFinder}
+                        </p>
                       </div>
 
                       {/* Services Chips */}
@@ -231,7 +233,7 @@ export const EmergencyShelterModal: React.FC<EmergencyShelterModalProps> = ({
                         {((language === 'en' && shelter.servicesEn && shelter.servicesEn.length > 0) ? shelter.servicesEn : shelter.services).map((svc, idx) => (
                           <span
                             key={idx}
-                            className="px-2 py-0.5 rounded-md bg-stone-900 text-[10px] text-stone-300 border border-stone-800"
+                            className="px-2.5 py-1 rounded-lg bg-stone-900 text-[10px] text-stone-300 border border-stone-800"
                           >
                             {svc}
                           </span>
@@ -240,7 +242,7 @@ export const EmergencyShelterModal: React.FC<EmergencyShelterModalProps> = ({
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="pt-2 border-t border-stone-700/80 flex items-center gap-2">
+                    <div className="pt-3 border-t border-stone-700/80 flex items-center gap-2.5">
                       <a
                         href={`tel:${shelter.hotline.replace(/\s+/g, '')}`}
                         className="flex-1 py-2.5 px-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-xs"

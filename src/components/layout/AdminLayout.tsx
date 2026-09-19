@@ -63,7 +63,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ currentPath, navigate,
       {/* Mobile Admin Header */}
       <div className="md:hidden bg-stone-900 border-b border-stone-800 p-4 flex items-center justify-between sticky top-[37px] z-30">
         <div className="flex items-center gap-2">
-          <img src="/logo.png" alt="" className="w-6 h-6 rounded-full object-cover" />
+          <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" className="w-6 h-6 rounded-full object-cover" />
           <span className="font-bold text-white text-sm">PetCare Admin Portal</span>
         </div>
         <button
@@ -83,7 +83,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ currentPath, navigate,
           
           {/* Admin Brand */}
           <div className="flex items-center gap-2.5 pb-3 border-b border-stone-800">
-            <img src="/logo.png" alt="" className="w-9 h-9 rounded-full object-cover shadow-xs ring-1 ring-amber-400/40" />
+            <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" className="w-9 h-9 rounded-full object-cover shadow-xs ring-1 ring-amber-400/40" />
             <div className="space-y-0.5">
               <h3 className="font-black text-white text-sm tracking-tight leading-none">Admin Portal</h3>
               <p className="text-[10px] text-stone-400 font-medium">

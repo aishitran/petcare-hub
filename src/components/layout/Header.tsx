@@ -75,7 +75,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, navigate, onOpenAdo
               className="flex items-center gap-3 cursor-pointer group select-none"
             >
               <img 
-                src="/logo.png" 
+                src={`${import.meta.env.BASE_URL}logo.png`} 
                 alt="PetCare Hub Logo" 
                 className="w-10 h-10 rounded-full object-cover shadow-xs group-hover:scale-105 transition ring-2 ring-[#d46b28]/30"
               />

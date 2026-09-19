@@ -43,7 +43,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ navigate }) => {
         {/* Brand Header */}
         <div className="text-center space-y-2">
           <div className="w-14 h-14 rounded-2xl bg-white shadow-md p-1 border border-stone-200 mx-auto flex items-center justify-center">
-            <img src="/logo.png" alt="PetCare Hub" className="w-full h-full object-contain rounded-xl" />
+            <img src={`${import.meta.env.BASE_URL}logo.png`} alt="PetCare Hub" className="w-full h-full object-contain rounded-xl" />
           </div>
           <h1 className="text-2xl font-black text-stone-900 font-display">{t('auth.loginTitle')}</h1>
           <p className="text-xs text-stone-500">{t('auth.loginSubtitle')}</p>

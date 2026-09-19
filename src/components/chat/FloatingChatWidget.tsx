@@ -253,7 +253,7 @@ export const FloatingChatWidget: React.FC = () => {
             aria-label={t('chat.floatingButton')}
           >
             <div className="relative">
-              <img src="/logo.png" alt="" className="w-6 h-6 rounded-full object-cover ring-1 ring-white/60 shadow-xs" />
+              <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" className="w-6 h-6 rounded-full object-cover ring-1 ring-white/60 shadow-xs" />
               <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-amber-300 ring-2 ring-[#d46b28] animate-pulse" />
             </div>
 
@@ -287,7 +287,7 @@ export const FloatingChatWidget: React.FC = () => {
           {/* Main Top Header */}
           <div className="p-3 sm:p-3.5 bg-gradient-to-r from-[#d46b28] to-[#ba591a] text-white flex items-center justify-between gap-2 shrink-0 border-b border-[#ba591a]/40 shadow-xs">
             <div className="flex items-center gap-2">
-              <img src="/logo.png" alt="" className="w-8 h-8 rounded-full object-cover ring-1 ring-white/60 shadow-xs" />
+              <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" className="w-8 h-8 rounded-full object-cover ring-1 ring-white/60 shadow-xs" />
               <div className="flex flex-col">
                 <span className="text-xs sm:text-sm font-bold text-white tracking-tight">
                   PetCare Hub Live

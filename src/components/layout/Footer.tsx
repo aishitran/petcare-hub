@@ -16,7 +16,7 @@ export const Footer: React.FC<{ navigate: (path: string) => void }> = ({ navigat
           {/* Brand Col (2 cols on lg) */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => navigate('/')}>
-              <img src="/logo.png" alt="PetCare Hub" className="w-9 h-9 rounded-full object-cover shadow-2xs ring-2 ring-[#d46b28]/30" />
+              <img src={`${import.meta.env.BASE_URL}logo.png`} alt="PetCare Hub" className="w-9 h-9 rounded-full object-cover shadow-2xs ring-2 ring-[#d46b28]/30" />
               <span className="text-xl font-black tracking-tight text-[#2b2523] dark:text-stone-100 font-display">
                 PetCare <span className="text-[#d46b28] font-bold">Hub</span>
               </span>
