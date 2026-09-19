@@ -4,7 +4,7 @@ import { defineConfig } from 'vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: './', // CI/CD for GitHub Pages
+  base: '/petcare-hub/', // GitHub Pages base repository path
   server: {
     host: true,
     port: 5173,
