@@ -1,0 +1,516 @@
+import { Pet } from '../types/pet';
+
+export const mockPets: Pet[] = [
+  {
+    id: 'pet-1',
+    creatorUserId: 'user-2',
+    creatorUserName: 'Lê Thu Thảo',
+    creatorUserAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=80',
+    creatorUserPhone: '0912 345 999',
+    name: 'Milo',
+    species: 'DOG',
+    gender: 'MALE',
+    ageDisplay: '1 tuổi 2 tháng',
+    ageMonths: 14,
+    breed: 'Chó Cỏ Lai Corgi',
+    color: 'Vàng trắng',
+    size: 'MEDIUM',
+    location: 'Quận 7, TP. Hồ Chí Minh',
+    avatar: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=800&auto=format&fit=crop&q=80',
+    photos: [
+      'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=800&auto=format&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=800&auto=format&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?w=800&auto=format&fit=crop&q=80'
+    ],
+    health: {
+      condition: 'EXCELLENT',
+      conditionDescription: 'Đã hoàn toàn khỏe mạnh sau điều trị viêm da. Ăn uống tốt, lanh lợi.',
+      vaccinated: true,
+      dewormed: true,
+      neutered: true,
+      hasDiseaseOrDisability: false,
+      medicalHistory: [
+        'Tiêm phòng dại định kỳ 15/07/2026',
+        'Tiêm vắc xin 7 bệnh mũi 2 01/08/2026',
+        'Đã triệt sản và kiểm tra sức khỏe tổng quát'
+      ],
+      weightKg: 11.5
+    },
+    personality: {
+      tags: ['Thân thiện', 'Năng động', 'Thích trẻ em', 'Rất nghe lời', 'Thích đi dạo'],
+      friendlyWithPeople: true,
+      friendlyWithKids: true,
+      friendlyWithDogs: true,
+      friendlyWithCats: true,
+      habits: 'Thích chạy nhảy buổi sáng, biết đi vệ sinh đúng khay cát/bãi cỏ.',
+      interests: 'Thích chơi bóng tennis và được gãi bụng.'
+    },
+    adoptionReqs: {
+      purpose: 'REHOMING',
+      postingReason: 'Gia đình chuyển sang căn hộ không cho phép nuôi chó lớn nên mong muốn tìm chủ mới yêu thương.',
+      adoptionFee: 0,
+      conditions: [
+        'Không xích nhốt liên tục',
+        'Có sự đồng thuận của mọi thành viên gia đình',
+        'Cập nhật tình hình bé định kỳ tháng đầu'
+      ],
+      homeVisitRequired: false,
+      minAdopterAge: 18,
+      commitmentRequired: true,
+      handoverLocation: 'Khu vực Phú Mỹ Hưng, Quận 7, TP.HCM'
+    },
+    status: 'WAITING',
+    moderationStatus: 'APPROVED',
+    createdAt: '25/08/2026',
+    updatedAt: '28/08/2026',
+    viewsCount: 680,
+    favoritesCount: 54,
+    activeApplicationsCount: 1
+  },
+  {
+    id: 'pet-2',
+    creatorUserId: 'user-3',
+    creatorUserName: 'Trần Văn Nam',
+    creatorUserAvatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=200&auto=format&fit=crop&q=80',
+    creatorUserPhone: '0933 111 222',
+    name: 'Luna',
+    species: 'CAT',
+    gender: 'FEMALE',
+    ageDisplay: '8 tháng tuổi',
+    ageMonths: 8,
+    breed: 'Mèo Anh Lông Ngắn Lai',
+    color: 'Xám khói mắt hổ phách',
+    size: 'SMALL',
+    location: 'Quận Bình Thạnh, TP. Hồ Chí Minh',
+    avatar: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=800&auto=format&fit=crop&q=80',
+    photos: [
+      'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=800&auto=format&fit=crop&q=80',
+      'https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=800&auto=format&fit=crop&q=80'
+    ],
+    health: {
+      condition: 'EXCELLENT',
+      conditionDescription: 'Khỏe mạnh, mượt lông, sạch sẽ, đã tẩy giun và tiêm phòng 2 mũi.',
+      vaccinated: true,
+      dewormed: true,
+      neutered: true,
+      hasDiseaseOrDisability: false,
+      medicalHistory: ['Tiêm phòng 4 bệnh mũi 2 ngày 10/08/2026', 'Triệt sản ngày 20/08/2026'],
+      weightKg: 3.2
+    },
+    personality: {
+      tags: ['Điềm tĩnh', 'Quấn chủ', 'Thích nằm nệm', 'Biết đi vệ sinh chậu cát'],
+      friendlyWithPeople: true,
+      friendlyWithKids: true,
+      friendlyWithDogs: false,
+      friendlyWithCats: true,
+      habits: 'Thích nằm phơi nắng bên cửa sổ, không cào đồ bừa bãi.',
+      interests: 'Thích đồ chơi cần câu mèo và bánh thưởng phô mai.'
+    },
+    adoptionReqs: {
+      purpose: 'ADOPTION',
+      postingReason: 'Bé được cứu hộ ngoài mưa bão, đã hồi phục hoàn toàn và sẵn sàng về nhà mới.',
+      adoptionFee: 0,
+      conditions: [
+        'Nuôi khép kín trong nhà, ban công có lưới an toàn',
+        'Cam kết chăm sóc y tế khi bé ốm đau'
+      ],
+      homeVisitRequired: false,
+      minAdopterAge: 18,
+      commitmentRequired: true,
+      handoverLocation: 'Quận Bình Thạnh, TP.HCM'
+    },
+    status: 'WAITING',
+    moderationStatus: 'APPROVED',
+    createdAt: '28/08/2026',
+    updatedAt: '30/08/2026',
+    viewsCount: 520,
+    favoritesCount: 62,
+    activeApplicationsCount: 0
+  },
+  {
+    id: 'pet-3',
+    creatorUserId: 'user-2',
+    creatorUserName: 'Lê Thu Thảo',
+    creatorUserAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=80',
+    name: 'Mochi',
+    species: 'DOG',
+    gender: 'MALE',
+    ageDisplay: '2 tuổi',
+    ageMonths: 24,
+    breed: 'Golden Retriever Lai',
+    color: 'Vàng kem mượt',
+    size: 'LARGE',
+    location: 'Quận 1, TP. Hồ Chí Minh',
+    avatar: 'https://images.unsplash.com/photo-1552053831-71594a27632d?w=800&auto=format&fit=crop&q=80',
+    photos: [
+      'https://images.unsplash.com/photo-1552053831-71594a27632d?w=800&auto=format&fit=crop&q=80'
+    ],
+    health: {
+      condition: 'GOOD',
+      conditionDescription: 'Khỏe mạnh, thể lực tốt, đã tiêm phòng đầy đủ sổ theo dõi.',
+      vaccinated: true,
+      dewormed: true,
+      neutered: true,
+      hasDiseaseOrDisability: false,
+      medicalHistory: ['Tiêm phòng định kỳ 2026', 'Triệt sản 2025'],
+      weightKg: 26.0
+    },
+    personality: {
+      tags: ['Cực kỳ thân thiện', 'Yêu trẻ nhỏ', 'Rất tình cảm', 'Biết bắt tay'],
+      friendlyWithPeople: true,
+      friendlyWithKids: true,
+      friendlyWithDogs: true,
+      friendlyWithCats: true,
+      habits: 'Thích đi dạo mỗi chiều, hòa đồng với mọi người.',
+      interests: 'Thích bơi lội và chơi ném đĩa.'
+    },
+    adoptionReqs: {
+      purpose: 'REHOMING',
+      postingReason: 'Chủ cũ đi du học dài hạn nên cần tìm gia đình có sân vườn hoặc người có thời gian dắt bé đi dạo.',
+      adoptionFee: 200000,
+      conditions: ['Nhà có không gian sống thoải mái', 'Cam kết không xích nhốt'],
+      homeVisitRequired: true,
+      minAdopterAge: 20,
+      commitmentRequired: true,
+      handoverLocation: 'Quận 1, TP.HCM'
+    },
+    status: 'UNDER_REVIEW',
+    moderationStatus: 'APPROVED',
+    createdAt: '20/08/2026',
+    updatedAt: '01/09/2026',
+    viewsCount: 1420,
+    favoritesCount: 110,
+    activeApplicationsCount: 2
+  },
+  {
+    id: 'pet-4',
+    creatorUserId: 'user-1', // Posted by Minh (Main User)
+    creatorUserName: 'Đặng Quang Minh',
+    creatorUserAvatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&auto=format&fit=crop&q=80',
+    creatorUserPhone: '0988 345 678',
+    name: 'Bông',
+    species: 'CAT',
+    gender: 'FEMALE',
+    ageDisplay: '1 tuổi rưỡi',
+    ageMonths: 18,
+    breed: 'Mèo Ba Tư Lai Trắng',
+    color: 'Trắng muốt',
+    size: 'SMALL',
+    location: 'Quận 7, TP. Hồ Chí Minh',
+    avatar: 'https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=800&auto=format&fit=crop&q=80',
+    photos: [
+      'https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=800&auto=format&fit=crop&q=80'
+    ],
+    health: {
+      condition: 'EXCELLENT',
+      conditionDescription: 'Đã tiêm chủng 4 bệnh, triệt sản, mắt sáng và tai sạch.',
+      vaccinated: true,
+      dewormed: true,
+      neutered: true,
+      hasDiseaseOrDisability: false,
+      medicalHistory: ['Tiêm phòng dại 2026', 'Triệt sản 2026'],
+      weightKg: 3.8
+    },
+    personality: {
+      tags: ['Hiền lành', 'Thích được chải lông', 'Sợ tiếng động lớn', 'Quấn người'],
+      friendlyWithPeople: true,
+      friendlyWithKids: true,
+      friendlyWithDogs: false,
+      friendlyWithCats: true,
+      habits: 'Thích ngủ trong ổ êm, thích được vuốt cằm.',
+      interests: 'Thích chải lông mỗi tối.'
+    },
+    adoptionReqs: {
+      purpose: 'REHOMING',
+      postingReason: 'Do lịch công tác nước ngoài thường xuyên nên muốn tìm chủ nuôi có nhiều thời gian chăm sóc lông cho bé.',
+      adoptionFee: 0,
+      conditions: ['Nuôi trong nhà khép kín', 'Cam kết chải lông thường xuyên'],
+      homeVisitRequired: false,
+      minAdopterAge: 18,
+      commitmentRequired: true,
+      handoverLocation: 'Quận 7, TP.HCM'
+    },
+    status: 'WAITING',
+    moderationStatus: 'APPROVED',
+    createdAt: '01/09/2026',
+    updatedAt: '03/09/2026',
+    viewsCount: 890,
+    favoritesCount: 78,
+    activeApplicationsCount: 1
+  },
+  {
+    id: 'pet-5',
+    creatorUserId: 'user-3',
+    creatorUserName: 'Trần Văn Nam',
+    creatorUserAvatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=200&auto=format&fit=crop&q=80',
+    name: 'Đậu Đậu',
+    species: 'DOG',
+    gender: 'MALE',
+    ageDisplay: '10 tháng tuổi',
+    ageMonths: 10,
+    breed: 'Chó Phú Quốc Vện',
+    color: 'Vàng vện lưng xoáy',
+    size: 'MEDIUM',
+    location: 'Quận 7, TP. Hồ Chí Minh',
+    avatar: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=800&auto=format&fit=crop&q=80',
+    photos: [
+      'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=800&auto=format&fit=crop&q=80'
+    ],
+    health: {
+      condition: 'EXCELLENT',
+      conditionDescription: 'Khỏe mạnh, thể lực dẻo dai, đã được Minh nhận nuôi thành công.',
+      vaccinated: true,
+      dewormed: true,
+      neutered: true,
+      hasDiseaseOrDisability: false,
+      medicalHistory: ['Tiêm 7 bệnh', 'Triệt sản'],
+      weightKg: 13.0
+    },
+    personality: {
+      tags: ['Thông minh', 'Trung thành', 'Biết trông nhà', 'Nhanh nhẹn'],
+      friendlyWithPeople: true,
+      friendlyWithKids: true,
+      friendlyWithDogs: true,
+      friendlyWithCats: false,
+      habits: 'Rất nghe lời chủ, biết bảo vệ nhà.',
+      interests: 'Thích chạy bộ cùng chủ.'
+    },
+    adoptionReqs: {
+      purpose: 'ADOPTION',
+      postingReason: 'Đã được nhận nuôi bởi Đặng Quang Minh.',
+      adoptionFee: 0,
+      conditions: ['Cam kết yêu thương trọn đời'],
+      homeVisitRequired: false,
+      minAdopterAge: 18,
+      commitmentRequired: true,
+      handoverLocation: 'Quận 7, TP.HCM'
+    },
+    status: 'ADOPTED',
+    moderationStatus: 'APPROVED',
+    createdAt: '10/08/2026',
+    updatedAt: '25/08/2026',
+    viewsCount: 1200,
+    favoritesCount: 95,
+    activeApplicationsCount: 0
+  },
+  {
+    id: 'pet-6',
+    creatorUserId: 'user-2',
+    creatorUserName: 'Lê Thu Thảo',
+    creatorUserAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=80',
+    name: 'Mít',
+    species: 'CAT',
+    gender: 'MALE',
+    ageDisplay: '6 tháng tuổi',
+    ageMonths: 6,
+    breed: 'Mèo Mướp Ta',
+    color: 'Vàng sọc xám',
+    size: 'SMALL',
+    location: 'Quận Cầu Giấy, Hà Nội',
+    avatar: 'https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=800&auto=format&fit=crop&q=80',
+    photos: [
+      'https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=800&auto=format&fit=crop&q=80'
+    ],
+    health: {
+      condition: 'RECOVERING',
+      conditionDescription: 'Đang nhỏ thuốc điều trị viêm tai nhẹ, cần theo dõi thêm 1 tuần trước khi mở lại nhận nuôi.',
+      vaccinated: true,
+      dewormed: true,
+      neutered: false,
+      hasDiseaseOrDisability: false,
+      medicalHistory: ['Đang điều trị rận tai'],
+      weightKg: 2.1
+    },
+    personality: {
+      tags: ['Tò mò', 'Hay kêu meo meo', 'Rất háu ăn'],
+      friendlyWithPeople: true,
+      friendlyWithKids: true,
+      friendlyWithDogs: true,
+      friendlyWithCats: true,
+      habits: 'Thích rượt bóng và leo trèo.',
+      interests: 'Pate cá hồi.'
+    },
+    adoptionReqs: {
+      purpose: 'RESCUE',
+      postingReason: 'Tạm dừng nhận nuôi để hoàn tất điều trị tai.',
+      adoptionFee: 0,
+      conditions: ['Nuôi trong nhà'],
+      homeVisitRequired: false,
+      minAdopterAge: 18,
+      commitmentRequired: true,
+      handoverLocation: 'Hà Nội'
+    },
+    status: 'PAUSED',
+    moderationStatus: 'APPROVED',
+    createdAt: '15/08/2026',
+    updatedAt: '04/09/2026',
+    viewsCount: 340,
+    favoritesCount: 22,
+    activeApplicationsCount: 0
+  },
+  {
+    id: 'pet-7',
+    creatorUserId: 'user-3',
+    creatorUserName: 'Trần Văn Nam',
+    creatorUserAvatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=200&auto=format&fit=crop&q=80',
+    name: 'Lucky',
+    species: 'DOG',
+    gender: 'FEMALE',
+    ageDisplay: '3 tuổi',
+    ageMonths: 36,
+    breed: 'Poodle Nâu Đỏ',
+    color: 'Nâu socola',
+    size: 'SMALL',
+    location: 'Quận Hải Châu, Đà Nẵng',
+    avatar: 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=800&auto=format&fit=crop&q=80',
+    photos: [
+      'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=800&auto=format&fit=crop&q=80'
+    ],
+    health: {
+      condition: 'EXCELLENT',
+      conditionDescription: 'Khỏe mạnh, đã tiêm phòng và triệt sản đầy đủ.',
+      vaccinated: true,
+      dewormed: true,
+      neutered: true,
+      hasDiseaseOrDisability: false,
+      medicalHistory: ['Tiêm phòng định kỳ 2026'],
+      weightKg: 4.5
+    },
+    personality: {
+      tags: ['Cực kỳ thông minh', 'Quấn chân', 'Không rụng lông', 'Ngoan'],
+      friendlyWithPeople: true,
+      friendlyWithKids: true,
+      friendlyWithDogs: true,
+      friendlyWithCats: true,
+      habits: 'Biết làm trò, đi vệ sinh đúng giờ.',
+      interests: 'Thích mặc áo ấm và đi dạo phố.'
+    },
+    adoptionReqs: {
+      purpose: 'REHOMING',
+      postingReason: 'Chủ cũ chuyển đổi nơi ở không tiện chăm sóc.',
+      adoptionFee: 150000,
+      conditions: ['Cam kết chải lông và vệ sinh định kỳ'],
+      homeVisitRequired: false,
+      minAdopterAge: 18,
+      commitmentRequired: true,
+      handoverLocation: 'Hải Châu, Đà Nẵng'
+    },
+    status: 'WAITING',
+    moderationStatus: 'APPROVED',
+    createdAt: '02/09/2026',
+    updatedAt: '05/09/2026',
+    viewsCount: 960,
+    favoritesCount: 84,
+    activeApplicationsCount: 0
+  },
+  {
+    id: 'pet-8',
+    creatorUserId: 'user-2',
+    creatorUserName: 'Lê Thu Thảo',
+    creatorUserAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&auto=format&fit=crop&q=80',
+    name: 'Hạt Dẻ',
+    species: 'CAT',
+    gender: 'MALE',
+    ageDisplay: '1.5 tháng tuổi (Dưới 2 tháng)',
+    ageMonths: 1.5,
+    breed: 'Mèo Mướp Con',
+    color: 'Vàng cam sữa',
+    size: 'SMALL',
+    location: 'Quận 1, TP. Hồ Chí Minh',
+    avatar: 'https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?w=800&auto=format&fit=crop&q=80',
+    photos: [
+      'https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?w=800&auto=format&fit=crop&q=80'
+    ],
+    health: {
+      condition: 'GOOD',
+      conditionDescription: 'Đang bú dặm sữa chuyên dụng, sức khỏe ổn định, chờ đủ 2 tháng để tiêm vắc xin mũi 1.',
+      vaccinated: false,
+      dewormed: true,
+      neutered: false,
+      hasDiseaseOrDisability: false,
+      medicalHistory: ['Tẩy giun lần 1'],
+      weightKg: 0.7
+    },
+    personality: {
+      tags: ['Đáng yêu', 'Thích ngủ', 'Hiếu động khi thức'],
+      friendlyWithPeople: true,
+      friendlyWithKids: true,
+      friendlyWithDogs: true,
+      friendlyWithCats: true,
+      habits: 'Bú bình giỏi, ngoan ngoãn.',
+      interests: 'Thích cuộn tròn ngủ.'
+    },
+    adoptionReqs: {
+      purpose: 'RESCUE',
+      postingReason: 'Mèo con được cứu hộ từ thùng carton bên đường.',
+      adoptionFee: 0,
+      conditions: ['Cam kết tiêm vắc xin đầy đủ khi đủ 2 tháng tuổi'],
+      homeVisitRequired: false,
+      minAdopterAge: 18,
+      commitmentRequired: true,
+      handoverLocation: 'Quận 1, TP.HCM'
+    },
+    status: 'COMING_SOON',
+    moderationStatus: 'APPROVED',
+    createdAt: '03/09/2026',
+    updatedAt: '05/09/2026',
+    viewsCount: 650,
+    favoritesCount: 89,
+    activeApplicationsCount: 0
+  },
+  {
+    id: 'pet-9',
+    creatorUserId: 'user-3',
+    creatorUserName: 'Trần Văn Nam',
+    creatorUserAvatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=200&auto=format&fit=crop&q=80',
+    name: 'Nala',
+    species: 'DOG',
+    gender: 'FEMALE',
+    ageDisplay: '7 tháng tuổi',
+    ageMonths: 7,
+    breed: 'Corgi Tricolor',
+    color: 'Ba màu đen vàng trắng',
+    size: 'MEDIUM',
+    location: 'Quận 3, TP. Hồ Chí Minh',
+    avatar: 'https://images.unsplash.com/photo-1612536057832-2ff7ead58194?w=800&auto=format&fit=crop&q=80',
+    photos: [
+      'https://images.unsplash.com/photo-1612536057832-2ff7ead58194?w=800&auto=format&fit=crop&q=80'
+    ],
+    health: {
+      condition: 'EXCELLENT',
+      conditionDescription: 'Khỏe mạnh, tiêm phòng 2 mũi, mông trái tim đáng yêu.',
+      vaccinated: true,
+      dewormed: true,
+      neutered: false,
+      hasDiseaseOrDisability: false,
+      medicalHistory: ['Tiêm phòng mũi 2 2026'],
+      weightKg: 8.5
+    },
+    personality: {
+      tags: ['Tăng động', 'Lanh lợi', 'Thích chụp ảnh', 'Hòa đồng'],
+      friendlyWithPeople: true,
+      friendlyWithKids: true,
+      friendlyWithDogs: true,
+      friendlyWithCats: true,
+      habits: 'Thích đuổi theo lá cây.',
+      interests: 'Thịt bò sấy.'
+    },
+    adoptionReqs: {
+      purpose: 'REHOMING',
+      postingReason: 'Chủ bận việc không có thời gian dắt bé đi tiêu hao năng lượng.',
+      adoptionFee: 0,
+      conditions: ['Dành ít nhất 45 phút mỗi ngày dắt bé vận động'],
+      homeVisitRequired: false,
+      minAdopterAge: 18,
+      commitmentRequired: true,
+      handoverLocation: 'Quận 3, TP.HCM'
+    },
+    status: 'WAITING',
+    moderationStatus: 'PENDING_APPROVAL',
+    createdAt: '07/09/2026',
+    updatedAt: '07/09/2026',
+    viewsCount: 120,
+    favoritesCount: 15,
+    activeApplicationsCount: 0
+  }
+];
