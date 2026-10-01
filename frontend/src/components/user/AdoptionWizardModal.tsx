@@ -6,7 +6,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { translateAddress } from '../../utils/addressTranslator';
 import { translateBreed } from '../../utils/petTranslator';
 import { translateDynamicText } from '../../utils/dataTranslator';
-import { X, ArrowRight, ArrowLeft } from 'lucide-react';
+import { X, ArrowRight, ArrowLeft, CheckCircle2 } from 'lucide-react';
 
 interface AdoptionWizardModalProps {
   isOpen: boolean;
@@ -212,8 +212,8 @@ export const AdoptionWizardModal: React.FC<AdoptionWizardModalProps> = ({
           {submittedResult ? (
             /* SUBMISSION SUCCESS VIEW */
             <div className="py-8 text-center space-y-4">
-              <div className="w-14 h-14 rounded-full bg-emerald-600 text-white flex items-center justify-center mx-auto text-lg font-bold shadow-xs">
-                ✓
+              <div className="w-14 h-14 rounded-full bg-emerald-600 text-white flex items-center justify-center mx-auto shadow-xs">
+                <CheckCircle2 className="w-8 h-8" />
               </div>
 
               <div className="space-y-1 max-w-md mx-auto">
@@ -576,7 +576,7 @@ export const AdoptionWizardModal: React.FC<AdoptionWizardModalProps> = ({
                       <ul className="space-y-1 text-[11px] text-stone-600 dark:text-stone-300">
                         {(pet.requirements?.conditions || pet.adoptionReqs?.conditions || []).map((cond, idx) => (
                           <li key={idx} className="flex items-start gap-1.5">
-                            <span className="text-emerald-700 dark:text-emerald-400 font-bold">✓</span>
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-400 shrink-0 mt-0.5" />
                             <span>{translateDynamicText(cond, language)}</span>
                           </li>
                         ))}

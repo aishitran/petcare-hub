@@ -292,7 +292,7 @@ export const HomePage: React.FC<HomePageProps> = ({ navigate, onOpenAdoptionGuid
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
                 <div className="bg-white/12 hover:bg-white/18 border border-white/20 p-3.5 rounded-2xl space-y-1 shadow-xs transition backdrop-blur-xs">
                   <div className="text-white font-bold text-xs flex items-center gap-1.5">
-                    <span className="text-amber-300 font-extrabold">✓</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-300" />
                     <span>{t('campaign.pillar1Title')}</span>
                   </div>
                   <p className="text-[11px] text-amber-100/80 leading-normal">
@@ -302,7 +302,7 @@ export const HomePage: React.FC<HomePageProps> = ({ navigate, onOpenAdoptionGuid
 
                 <div className="bg-white/12 hover:bg-white/18 border border-white/20 p-3.5 rounded-2xl space-y-1 shadow-xs transition backdrop-blur-xs">
                   <div className="text-white font-bold text-xs flex items-center gap-1.5">
-                    <span className="text-amber-300 font-extrabold">✓</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-300" />
                     <span>{t('campaign.pillar2Title')}</span>
                   </div>
                   <p className="text-[11px] text-amber-100/80 leading-normal">
@@ -312,7 +312,7 @@ export const HomePage: React.FC<HomePageProps> = ({ navigate, onOpenAdoptionGuid
 
                 <div className="bg-white/12 hover:bg-white/18 border border-white/20 p-3.5 rounded-2xl space-y-1 shadow-xs transition backdrop-blur-xs">
                   <div className="text-white font-bold text-xs flex items-center gap-1.5">
-                    <span className="text-amber-300 font-extrabold">✓</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-300" />
                     <span>{t('campaign.pillar3Title')}</span>
                   </div>
                   <p className="text-[11px] text-amber-100/80 leading-normal">
@@ -332,7 +332,7 @@ export const HomePage: React.FC<HomePageProps> = ({ navigate, onOpenAdoptionGuid
                       : 'bg-rose-600 hover:bg-rose-500 text-white cursor-pointer hover:shadow-rose-600/30'
                   }`}
                 >
-                  {hasPledged ? `✓ ${t('campaign.pledgedBtn')}` : t('campaign.pledgeBtn')}
+                  {hasPledged ? t('campaign.pledgedBtn') : t('campaign.pledgeBtn')}
                 </button>
 
                 <button

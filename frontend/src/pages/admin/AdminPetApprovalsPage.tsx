@@ -253,25 +253,25 @@ export const AdminPetApprovalsPage: React.FC<AdminPetApprovalsPageProps> = ({ na
                 <div className="p-3 bg-stone-950 rounded-xl border border-stone-800">
                   <span className="text-stone-400 block text-[10px]">{isEn ? 'Sterilized:' : 'Triệt sản:'}</span>
                   <b className={inspectPet.health.isSterilized ? 'text-emerald-400' : 'text-amber-400'}>
-                    {inspectPet.health.isSterilized ? '✓ Đã triệt sản' : '✕ Chưa'}
+                    {inspectPet.health.isSterilized ? (isEn ? 'Sterilized' : 'Đã triệt sản') : (isEn ? 'Not Yet' : 'Chưa')}
                   </b>
                 </div>
                 <div className="p-3 bg-stone-950 rounded-xl border border-stone-800">
                   <span className="text-stone-400 block text-[10px]">{isEn ? 'Core Vaccine:' : 'Tiêm phòng:'}</span>
                   <b className={inspectPet.health.isVaccinated ? 'text-emerald-400' : 'text-amber-400'}>
-                    {inspectPet.health.isVaccinated ? '✓ Đã tiêm đầy đủ' : '✕ Chưa'}
+                    {inspectPet.health.isVaccinated ? (isEn ? 'Fully Vaccinated' : 'Đã tiêm đầy đủ') : (isEn ? 'Not Yet' : 'Chưa')}
                   </b>
                 </div>
                 <div className="p-3 bg-stone-950 rounded-xl border border-stone-800">
                   <span className="text-stone-400 block text-[10px]">{isEn ? 'Rabies Vaccine:' : 'Tiêm dại:'}</span>
                   <b className={inspectPet.health.isRabiesVaccinated ? 'text-emerald-400' : 'text-amber-400'}>
-                    {inspectPet.health.isRabiesVaccinated ? '✓ Đã tiêm dại' : '✕ Chưa'}
+                    {inspectPet.health.isRabiesVaccinated ? (isEn ? 'Rabies Done' : 'Đã tiêm dại') : (isEn ? 'Not Yet' : 'Chưa')}
                   </b>
                 </div>
                 <div className="p-3 bg-stone-950 rounded-xl border border-stone-800">
                   <span className="text-stone-400 block text-[10px]">{isEn ? 'Dewormed:' : 'Tẩy giun:'}</span>
                   <b className={inspectPet.health.isDewormed ? 'text-emerald-400' : 'text-stone-400'}>
-                    {inspectPet.health.isDewormed ? '✓ Định kỳ' : '✕ Chưa'}
+                    {inspectPet.health.isDewormed ? (isEn ? 'Regularly Dewormed' : 'Định kỳ') : (isEn ? 'Not Yet' : 'Chưa')}
                   </b>
                 </div>
               </div>

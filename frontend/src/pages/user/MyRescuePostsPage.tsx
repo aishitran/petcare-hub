@@ -235,8 +235,8 @@ export const MyRescuePostsPage: React.FC<MyRescuePostsPageProps> = ({ navigate }
                     onChange={(e: any) => setPriority(e.target.value)}
                     className="w-full px-3 py-2 rounded-xl border border-stone-300 dark:border-stone-700 text-xs bg-stone-50 dark:bg-stone-800 font-bold text-rose-700 dark:text-rose-400"
                   >
-                    <option value="URGENT">{isEn ? '🔥 Urgent (Immediate)' : '🔥 Khẩn cấp (Ngay lập tức)'}</option>
-                    <option value="HIGH">{isEn ? '⚡ High Priority' : '⚡ Ưu tiên cao'}</option>
+                    <option value="URGENT">{isEn ? 'Urgent (Immediate)' : 'Khẩn cấp (Ngay lập tức)'}</option>
+                    <option value="HIGH">{isEn ? 'High Priority' : 'Ưu tiên cao'}</option>
                     <option value="MEDIUM">{isEn ? 'Moderate' : 'Vừa phải'}</option>
                   </select>
                 </div>

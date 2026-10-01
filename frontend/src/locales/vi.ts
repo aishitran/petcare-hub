@@ -335,7 +335,7 @@ export const vi = {
     discussingAbout: 'Đang trao đổi về bạn nhỏ:',
     online: 'Đang hoạt động',
     offline: 'Vừa mới truy cập',
-    welcome1: 'Xin chào bạn! 🐾 Tôi là trợ lý cộng đồng PetCare Hub.',
+    welcome1: 'Xin chào bạn! Tôi là trợ lý cộng đồng PetCare Hub.',
     welcome2: 'Tôi có thể hỗ trợ bạn tìm kiếm bạn nhỏ nhận nuôi, hướng dẫn quy trình, tra cứu trạm cứu hộ khẩn cấp hoặc giải đáp thắc mắc về quỹ lương thực. Bạn cần giúp gì ạ?',
     quickQuestionsTitle: 'Câu hỏi thường gặp & Cứu hộ SOS:',
     quickQ1: 'Làm thế nào để nộp đơn nhận nuôi một bạn nhỏ?',

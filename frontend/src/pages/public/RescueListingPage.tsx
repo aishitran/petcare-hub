@@ -310,12 +310,12 @@ export const RescueListingPage: React.FC<RescueListingPageProps> = ({ navigate }
                     className="w-full px-3 py-2 rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-stone-100 text-xs font-medium focus:ring-2 focus:ring-[#d46b28]"
                   >
                     <option value="ALL">{isEn ? 'All Animals' : 'Tất cả loài'}</option>
-                    <option value="DOG">🐕 {isEn ? 'Dogs' : 'Chó'}</option>
-                    <option value="CAT">🐈 {isEn ? 'Cats' : 'Mèo'}</option>
-                    <option value="RABBIT">🐇 {isEn ? 'Rabbits' : 'Thỏ'}</option>
-                    <option value="BIRD">🐦 {isEn ? 'Birds' : 'Chim'}</option>
-                    <option value="TURTLE">🐢 {isEn ? 'Turtles' : 'Rùa'}</option>
-                    <option value="WILDLIFE">🦔 {isEn ? 'Wildlife' : 'Động vật hoang dã'}</option>
+                    <option value="DOG">{isEn ? 'Dogs' : 'Chó'}</option>
+                    <option value="CAT">{isEn ? 'Cats' : 'Mèo'}</option>
+                    <option value="RABBIT">{isEn ? 'Rabbits' : 'Thỏ'}</option>
+                    <option value="BIRD">{isEn ? 'Birds' : 'Chim'}</option>
+                    <option value="TURTLE">{isEn ? 'Turtles' : 'Rùa'}</option>
+                    <option value="WILDLIFE">{isEn ? 'Wildlife' : 'Động vật hoang dã'}</option>
                   </select>
                 </div>
 

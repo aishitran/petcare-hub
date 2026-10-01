@@ -335,7 +335,7 @@ export const en = {
     discussingAbout: 'Discussing little one:',
     online: 'Active now',
     offline: 'Recently active',
-    welcome1: 'Hello! 🐾 I am your PetCare Hub community assistant.',
+    welcome1: 'Hello! I am your PetCare Hub community assistant.',
     welcome2: 'I can guide you through adoption steps, search for emergency rescue stations, or answer questions about the Food Power Fund. How can I help you today?',
     quickQuestionsTitle: 'Frequently Asked & Emergency SOS:',
     quickQ1: 'How do I apply to adopt a little one?',

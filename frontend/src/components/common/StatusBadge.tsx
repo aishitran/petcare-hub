@@ -104,7 +104,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ type, status, size = '
   if (detectedType === 'identity') {
     switch (status) {
       case 'VERIFIED':
-        return <span className={`rounded-full bg-emerald-50 text-emerald-800 ring-1 ring-emerald-600/30 ${sizeClasses}`}>{isEn ? '✓ Verified Member' : '✓ Thành viên xác minh'}</span>;
+        return <span className={`rounded-full bg-emerald-50 text-emerald-800 ring-1 ring-emerald-600/30 ${sizeClasses}`}>{isEn ? 'Verified Member' : 'Thành viên xác minh'}</span>;
       case 'PENDING':
         return <span className={`rounded-full bg-amber-50 text-amber-800 ring-1 ring-amber-600/30 ${sizeClasses}`}>{isEn ? 'Under Review' : 'Đang duyệt'}</span>;
       case 'FAILED':

@@ -265,8 +265,8 @@ export const RescueDetailPage: React.FC<RescueDetailPageProps> = ({ rescueId, na
 
             {supportSuccess ? (
               <div className="p-6 text-center space-y-3 bg-stone-50 dark:bg-stone-800 rounded-2xl border border-stone-200 dark:border-stone-700">
-                <div className="w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center mx-auto text-base font-bold">
-                  ✓
+                <div className="w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center mx-auto shadow-xs">
+                  <CheckCircle2 className="w-6 h-6" />
                 </div>
                 <h4 className="font-bold text-stone-900 dark:text-stone-100 text-base">{t('rescue.supportRecorded')}</h4>
                 <p className="text-xs text-stone-600 dark:text-stone-400">{language === 'en' ? `Your contact details have been sent to ${post.contactPerson}.` : `Thông tin liên hệ đã được gửi tới ${post.contactPerson}.`}</p>

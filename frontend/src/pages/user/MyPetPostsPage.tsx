@@ -190,9 +190,6 @@ export const MyPetPostsPage: React.FC<MyPetPostsPageProps> = ({ navigate }) => {
         </div>
       ) : (
         <div className="bg-white dark:bg-stone-900 p-12 rounded-3xl border border-dashed border-stone-300 dark:border-stone-800 text-center space-y-4">
-          <div className="w-16 h-16 rounded-2xl bg-stone-100 dark:bg-stone-800 text-stone-400 flex items-center justify-center mx-auto text-2xl">
-            🐾
-          </div>
           <div className="space-y-1">
             <h3 className="font-bold text-[#2b2523] dark:text-stone-100 text-base">{isEn ? 'No Pet Listings Found' : 'Chưa có tin thú cưng nào'}</h3>
             <p className="text-xs text-stone-500 dark:text-stone-400">{isEn ? 'You have not posted any pets for adoption or filter returned no matches.' : 'Bạn chưa đăng tin tìm chủ mới cho bạn nhỏ nào hoặc bộ lọc không khớp.'}</p>

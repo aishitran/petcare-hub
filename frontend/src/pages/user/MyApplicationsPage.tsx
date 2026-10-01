@@ -334,8 +334,8 @@ export const MyApplicationsPage: React.FC<MyApplicationsPageProps> = ({ navigate
               </span>
               <p>
                 {isEn 
-                  ? '✓ Agreed to non-commercial adoption, zero abuse, regular vaccinations, and post-adoption check-ins.'
-                  : '✓ Đã đồng ý không mua bán, không ngược đãi, tiêm phòng định kỳ và check-in sau nhận nuôi.'}
+                  ? 'Agreed to non-commercial adoption, zero abuse, regular vaccinations, and post-adoption check-ins.'
+                  : 'Đã đồng ý không mua bán, không ngược đãi, tiêm phòng định kỳ và check-in sau nhận nuôi.'}
               </p>
             </div>
 

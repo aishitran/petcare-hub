@@ -121,7 +121,7 @@ export const PostAdoptionCheckInsPage: React.FC<PostAdoptionCheckInsPageProps> =
                 </div>
 
                 <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-900">
-                  {isEn ? '✓ Recorded' : '✓ Đã ghi nhận'}
+                  {isEn ? 'Recorded' : 'Đã ghi nhận'}
                 </span>
               </div>
 

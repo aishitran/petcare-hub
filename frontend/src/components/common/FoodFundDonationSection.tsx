@@ -94,8 +94,7 @@ export const FoodFundDonationSection: React.FC<FoodFundDonationSectionProps> = (
           {/* Main Title Matching User Image */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="space-y-1.5 max-w-3xl">
-              <div className="flex items-center gap-2.5">
-                <span className="text-2xl animate-pulse">❤️</span>
+              <div className="space-y-1.5">
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-black font-display text-[#2b2523] dark:text-stone-100 tracking-tight">
                   {isEn ? 'Shelter Needs & Supplies in Demand' : 'Những nhu cầu đang cần hỗ trợ'}
                 </h2>

@@ -98,23 +98,23 @@ export const RescueCenterCard: React.FC<RescueCenterCardProps> = ({
     }
   };
 
-  // Helper for Animal Icons
+  // Helper for Animal Badges
   const getAnimalBadge = (animal: SupportedAnimal | string) => {
     switch (animal) {
       case 'DOG':
-        return { emoji: '🐕', name: isEn ? 'Dogs' : 'Chó' };
+        return { name: isEn ? 'Dogs' : 'Chó' };
       case 'CAT':
-        return { emoji: '🐈', name: isEn ? 'Cats' : 'Mèo' };
+        return { name: isEn ? 'Cats' : 'Mèo' };
       case 'RABBIT':
-        return { emoji: '🐇', name: isEn ? 'Rabbits' : 'Thỏ' };
+        return { name: isEn ? 'Rabbits' : 'Thỏ' };
       case 'BIRD':
-        return { emoji: '🐦', name: isEn ? 'Birds' : 'Chim' };
+        return { name: isEn ? 'Birds' : 'Chim' };
       case 'TURTLE':
-        return { emoji: '🐢', name: isEn ? 'Turtles' : 'Rùa' };
+        return { name: isEn ? 'Turtles' : 'Rùa' };
       case 'WILDLIFE':
-        return { emoji: '🦔', name: isEn ? 'Wildlife' : 'Hoang dã' };
+        return { name: isEn ? 'Wildlife' : 'Hoang dã' };
       default:
-        return { emoji: '🐾', name: isEn ? 'Other' : 'Khác' };
+        return { name: isEn ? 'Other' : 'Khác' };
     }
   };
 
@@ -221,10 +221,8 @@ export const RescueCenterCard: React.FC<RescueCenterCardProps> = ({
                 return (
                   <span 
                     key={idx}
-                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-[#faf4ee] dark:bg-stone-800 border border-[#efe2d3] dark:border-stone-700 text-[11px] font-semibold text-[#5c4d46] dark:text-stone-300"
-                    title={badge.name}
+                    className="inline-flex items-center px-2 py-0.5 rounded-lg bg-[#faf4ee] dark:bg-stone-800 border border-[#efe2d3] dark:border-stone-700 text-[11px] font-semibold text-[#5c4d46] dark:text-stone-300"
                   >
-                    <span>{badge.emoji}</span>
                     <span>{badge.name}</span>
                   </span>
                 );

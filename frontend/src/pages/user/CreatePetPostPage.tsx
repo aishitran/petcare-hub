@@ -297,9 +297,9 @@ export const CreatePetPostPage: React.FC<CreatePetPostPageProps> = ({ navigate }
                 onChange={(e: any) => setSpecies(e.target.value)}
                 className="w-full px-3 py-2 rounded-xl border border-stone-300 bg-stone-50 text-xs font-bold"
               >
-                <option value="DOG">🐶 {isEn ? 'Dog' : 'Chó'}</option>
-                <option value="CAT">🐱 {isEn ? 'Cat' : 'Mèo'}</option>
-                <option value="OTHER">🐾 {isEn ? 'Other' : 'Khác'}</option>
+                <option value="DOG">{isEn ? 'Dog' : 'Chó'}</option>
+                <option value="CAT">{isEn ? 'Cat' : 'Mèo'}</option>
+                <option value="OTHER">{isEn ? 'Other' : 'Khác'}</option>
               </select>
             </div>
 
