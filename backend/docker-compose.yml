@@ -1,0 +1,110 @@
+version: '3.8'
+
+services:
+  # Databases
+  postgres:
+    image: postgres:16-alpine
+    container_name: petcare_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: petcare_user
+      POSTGRES_PASSWORD: petcare_password
+      POSTGRES_DB: petcare_hub
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  mongo:
+    image: mongo:7.0
+    container_name: petcare_mongo
+    restart: always
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+
+  redis:
+    image: redis:7-alpine
+    container_name: petcare_redis
+    restart: always
+    ports:
+      - '6379:6379'
+
+  # Microservices
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: petcare_gateway
+    ports:
+      - '8000:8000'
+    environment:
+      - PORT=8000
+      - AUTH_SERVICE_URL=http://auth-service:8001
+      - PET_SERVICE_URL=http://pet-service:8002
+      - RESCUE_SERVICE_URL=http://rescue-service:8003
+      - CHAT_SERVICE_URL=http://chat-service:8004
+    depends_on:
+      - auth-service
+      - pet-service
+      - rescue-service
+      - chat-service
+
+  auth-service:
+    build:
+      context: ./services/auth-service
+      dockerfile: Dockerfile
+    container_name: petcare_auth_service
+    ports:
+      - '8001:8001'
+    environment:
+      - PORT=8001
+      - DATABASE_URL=postgres://petcare_user:petcare_password@postgres:5432/petcare_hub
+    depends_on:
+      - postgres
+
+  pet-service:
+    build:
+      context: ./services/pet-service
+      dockerfile: Dockerfile
+    container_name: petcare_pet_service
+    ports:
+      - '8002:8002'
+    environment:
+      - PORT=8002
+      - DATABASE_URL=postgres://petcare_user:petcare_password@postgres:5432/petcare_hub
+    depends_on:
+      - postgres
+
+  rescue-service:
+    build:
+      context: ./services/rescue-service
+      dockerfile: Dockerfile
+    container_name: petcare_rescue_service
+    ports:
+      - '8003:8003'
+    environment:
+      - PORT=8003
+      - DATABASE_URL=postgres://petcare_user:petcare_password@postgres:5432/petcare_hub
+    depends_on:
+      - postgres
+
+  chat-service:
+    build:
+      context: ./services/chat-service
+      dockerfile: Dockerfile
+    container_name: petcare_chat_service
+    ports:
+      - '8004:8004'
+    environment:
+      - PORT=8004
+      - REDIS_URL=redis://redis:6379
+      - MONGO_URL=mongodb://mongo:27017/petcare_chat
+    depends_on:
+      - redis
+      - mongo
+
+volumes:
+  postgres_data:
+  mongo_data:
