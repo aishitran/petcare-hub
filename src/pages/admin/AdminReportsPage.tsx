@@ -11,7 +11,10 @@ import {
   Clock, 
   Lock, 
   User, 
-  X 
+  X,
+  Image as ImageIcon,
+  ExternalLink,
+  ZoomIn
 } from 'lucide-react';
 
 interface AdminReportsPageProps {
@@ -25,12 +28,13 @@ export const AdminReportsPage: React.FC<AdminReportsPageProps> = ({ navigate }) 
 
   const [inspectReport, setInspectReport] = useState<CommunityReport | null>(null);
   const [adminNote, setAdminNote] = useState('');
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
 
   const pendingReports = reports.filter(r => r.status === 'PENDING' || r.status === 'INVESTIGATING');
   const resolvedReports = reports.filter(r => r.status === 'RESOLVED' || r.status === 'DISMISSED');
 
   const handleResolve = (reportId: string, status: ReportStatus) => {
-    updateReportStatus(reportId, status, adminNote || (isEn ? 'Warning sent / Post removed according to community guidelines' : 'Đã xử lý cảnh cáo / gỡ bài vi phạm theo quy định'));
+    updateReportStatus(reportId, status, adminNote || (isEn ? 'Warning sent / Content restricted according to community guidelines' : 'Đã xử lý cảnh cáo / gỡ bài vi phạm theo quy định'));
     setInspectReport(null);
     setAdminNote('');
   };
@@ -39,7 +43,7 @@ export const AdminReportsPage: React.FC<AdminReportsPageProps> = ({ navigate }) 
     <div className="space-y-6 text-left text-stone-100">
       
       {/* Header */}
-      <div className="border-b border-stone-800 pb-4">
+      <div className="border-b border-stone-800 pb-4 text-center sm:text-left">
         <h1 className="text-2xl font-black text-white font-display">
           {isEn ? 'Community Safety & Abuse Reports' : 'Xử lý Báo cáo Vi phạm & An toàn'}
         </h1>
@@ -66,19 +70,50 @@ export const AdminReportsPage: React.FC<AdminReportsPageProps> = ({ navigate }) 
                 key={rep.id}
                 className="bg-stone-900 rounded-3xl border border-stone-800 p-5 shadow-lg space-y-4 flex flex-col justify-between"
               >
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <StatusBadge status={rep.reason} />
                     <StatusBadge status={rep.status} />
                   </div>
 
-                  <h3 className="font-bold text-white text-sm">{rep.targetTitle}</h3>
+                  <div>
+                    <h3 className="font-bold text-white text-sm">{rep.targetTitle}</h3>
+                    {rep.targetUserName && (
+                      <span className="text-[11px] text-stone-400 block mt-0.5">
+                        {isEn ? 'Subject User:' : 'Chủ tài khoản:'} <b className="text-stone-300">{rep.targetUserName}</b>
+                      </span>
+                    )}
+                  </div>
                   
                   <p className="text-xs text-stone-300 bg-stone-950 p-3 rounded-2xl border border-stone-800/80 leading-relaxed">
                     "{rep.description}"
                   </p>
 
-                  <span className="text-[10px] text-stone-500 block">
+                  {/* Evidence Images Preview if available */}
+                  {rep.evidenceImages && rep.evidenceImages.length > 0 && (
+                    <div className="space-y-1.5">
+                      <span className="text-[10px] font-bold text-teal-400 uppercase flex items-center gap-1">
+                        <ImageIcon className="w-3 h-3" />
+                        <span>{isEn ? `Evidence Photos (${rep.evidenceImages.length})` : `Ảnh minh chứng (${rep.evidenceImages.length})`}</span>
+                      </span>
+                      <div className="flex gap-2 overflow-x-auto pb-1">
+                        {rep.evidenceImages.map((imgUrl, imgIdx) => (
+                          <div 
+                            key={imgIdx} 
+                            onClick={() => setLightboxImage(imgUrl)}
+                            className="relative w-16 h-16 rounded-xl overflow-hidden border border-stone-700 bg-stone-950 shrink-0 cursor-pointer group"
+                          >
+                            <img src={imgUrl} alt="" className="w-full h-full object-cover group-hover:scale-105 transition" />
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition">
+                              <ZoomIn className="w-4 h-4" />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <span className="text-[10px] text-stone-500 block pt-1 border-t border-stone-800/60">
                     {isEn ? 'Reporter:' : 'Người báo cáo:'} {rep.reporterUserName} • {new Date(rep.createdAt).toLocaleDateString('vi-VN')}
                   </span>
                 </div>
@@ -135,7 +170,7 @@ export const AdminReportsPage: React.FC<AdminReportsPageProps> = ({ navigate }) 
       {/* INSPECT MODAL */}
       {inspectReport && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in text-left">
-          <div className="bg-stone-900 rounded-3xl max-w-lg w-full p-6 space-y-5 border border-stone-800 text-stone-100 shadow-2xl">
+          <div className="bg-stone-900 rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 space-y-5 border border-stone-800 text-stone-100 shadow-2xl">
             <div className="flex items-center justify-between pb-3 border-b border-stone-800">
               <h3 className="font-bold text-white text-base">
                 {isEn ? `Resolve Report: ${inspectReport.targetTitle}` : `Xử lý báo cáo: ${inspectReport.targetTitle}`}
@@ -145,11 +180,34 @@ export const AdminReportsPage: React.FC<AdminReportsPageProps> = ({ navigate }) 
               </button>
             </div>
 
-            <div className="space-y-3 text-xs">
-              <div className="p-3 bg-stone-950 rounded-2xl border border-stone-800 space-y-1">
+            <div className="space-y-4 text-xs">
+              <div className="p-3.5 bg-stone-950 rounded-2xl border border-stone-800 space-y-2">
                 <div><span className="text-stone-500">{isEn ? 'Report Reason:' : 'Lý do báo cáo:'}</span> <b className="text-rose-400">{inspectReport.reason}</b></div>
                 <div><span className="text-stone-500">{isEn ? 'Reporter Details:' : 'Nội dung người gửi phản ánh:'}</span> <p className="text-stone-300 mt-1">"{inspectReport.description}"</p></div>
               </div>
+
+              {/* Evidence Images */}
+              {inspectReport.evidenceImages && inspectReport.evidenceImages.length > 0 && (
+                <div className="space-y-2">
+                  <span className="font-bold text-teal-400 uppercase text-[11px] block">
+                    {isEn ? 'Evidence Screenshots & Proof:' : 'Ảnh bằng chứng & Chụp màn hình:'}
+                  </span>
+                  <div className="grid grid-cols-2 gap-2">
+                    {inspectReport.evidenceImages.map((imgUrl, idx) => (
+                      <div 
+                        key={idx} 
+                        onClick={() => setLightboxImage(imgUrl)}
+                        className="relative h-28 rounded-xl overflow-hidden border border-stone-700 bg-stone-950 cursor-pointer group"
+                      >
+                        <img src={imgUrl} alt="" className="w-full h-full object-cover group-hover:scale-105 transition" />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition">
+                          <ZoomIn className="w-5 h-5" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <div>
                 <label className="block text-xs font-bold text-stone-400 mb-1">
@@ -183,7 +241,24 @@ export const AdminReportsPage: React.FC<AdminReportsPageProps> = ({ navigate }) 
         </div>
       )}
 
+      {/* LIGHTBOX MODAL */}
+      {lightboxImage && (
+        <div 
+          onClick={() => setLightboxImage(null)}
+          className="fixed inset-0 z-60 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-fade-in cursor-pointer"
+        >
+          <div className="relative max-w-3xl w-full max-h-[90vh] flex items-center justify-center">
+            <img src={lightboxImage} alt="Evidence Large" className="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl border border-stone-700" />
+            <button 
+              onClick={() => setLightboxImage(null)}
+              className="absolute top-2 right-2 p-2 rounded-full bg-stone-900/80 text-white hover:bg-stone-800 cursor-pointer"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
-

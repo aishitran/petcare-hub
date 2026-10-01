@@ -13,22 +13,16 @@ import {
   X, 
   Minus, 
   Send, 
-  Sparkles, 
   Bot, 
   User, 
   ShieldCheck, 
-  PhoneCall, 
   Heart, 
-  Smile, 
-  Clock,
   RotateCcw,
   CheckCheck,
-  ChevronDown,
   ArrowLeft,
   Search,
   Users,
-  Check,
-  Phone
+  Bell
 } from 'lucide-react';
 
 export const FloatingChatWidget: React.FC = () => {
@@ -76,6 +70,75 @@ export const FloatingChatWidget: React.FC = () => {
   const directEndRef = useRef<HTMLDivElement>(null);
   const assistantInputRef = useRef<HTMLInputElement>(null);
   const directInputRef = useRef<HTMLInputElement>(null);
+
+  // Listen for open-direct-chat and open-admin-chat custom events
+  useEffect(() => {
+    const handleOpenDirectChat = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      if (!detail) return;
+      const { targetUserId, targetUserName, targetUserAvatar, targetUserRole, targetPetName, targetPetAvatar } = detail;
+
+      setUserConversations(prev => {
+        const existing = prev.find(c => c.targetUserId === targetUserId || (targetUserName && c.targetUserName === targetUserName));
+        if (existing) {
+          setSelectedConversationId(existing.id);
+          return prev.map(c => c.id === existing.id ? { ...c, unreadCount: 0 } : c);
+        }
+
+        const newConvId = `conv-${Date.now()}`;
+        const newConv: UserConversation = {
+          id: newConvId,
+          targetUserId: targetUserId || `user-${Date.now()}`,
+          targetUserName: targetUserName || 'Người dùng PetCare',
+          targetUserAvatar: targetUserAvatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200',
+          targetUserRole: targetUserRole || 'Người đăng tin',
+          targetPetName: targetPetName,
+          targetPetAvatar: targetPetAvatar,
+          isOnline: true,
+          lastMessage: language === 'en' ? 'Started conversation' : 'Đã bắt đầu cuộc trò chuyện',
+          lastMessageTime: new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }),
+          unreadCount: 0,
+          messages: [
+            {
+              id: `msg-direct-${Date.now()}`,
+              sender: 'OTHER_USER',
+              senderId: targetUserId,
+              text: language === 'en'
+                ? `Hello! Thank you for reaching out regarding ${targetPetName || 'my post'}. How can I assist you?`
+                : `Chào bạn! Cảm ơn bạn đã quan tâm đến ${targetPetName ? `bé ${targetPetName}` : 'tin đăng của mình'}. Bạn cần trao đổi thêm thông tin gì ạ? 🐾`,
+              timestamp: new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }),
+              senderName: targetUserName,
+              avatar: targetUserAvatar
+            }
+          ]
+        };
+        setSelectedConversationId(newConvId);
+        return [newConv, ...prev];
+      });
+
+      setActiveTab('USER_DIRECT');
+      setIsOpen(true);
+      setIsMinimized(false);
+    };
+
+    const handleOpenAdminChat = () => {
+      const adminConv = userConversations.find(c => c.id === 'conv-admin' || c.targetUserId === 'admin-1');
+      if (adminConv) {
+        setSelectedConversationId(adminConv.id);
+      }
+      setActiveTab('USER_DIRECT');
+      setIsOpen(true);
+      setIsMinimized(false);
+    };
+
+    window.addEventListener('open-direct-chat', handleOpenDirectChat);
+    window.addEventListener('open-admin-chat', handleOpenAdminChat);
+
+    return () => {
+      window.removeEventListener('open-direct-chat', handleOpenDirectChat);
+      window.removeEventListener('open-admin-chat', handleOpenAdminChat);
+    };
+  }, [language, userConversations]);
 
   // Auto-scroll when messages update
   useEffect(() => {
@@ -629,17 +692,6 @@ export const FloatingChatWidget: React.FC = () => {
                                 {currentActiveConv.isOnline ? t('chat.online') : t('chat.offline')} • {currentActiveConv.targetUserRole}
                               </span>
                             </div>
-                          </div>
-
-                          <div className="flex items-center gap-1 shrink-0">
-                            <button
-                              type="button"
-                              onClick={() => alert(language === 'en' ? `Contacting ${currentActiveConv.targetUserName}...` : `Đang kết nối liên hệ trực tiếp tới ${currentActiveConv.targetUserName}...`)}
-                              className="p-1.5 rounded-lg bg-[#fde2cd] dark:bg-amber-950/70 hover:bg-[#fcd4b4] text-[#d46b28] dark:text-amber-300 transition cursor-pointer"
-                              title="Gọi nhanh"
-                            >
-                              <Phone className="w-3.5 h-3.5" />
-                            </button>
                           </div>
                         </div>
                       )}

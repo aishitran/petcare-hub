@@ -193,6 +193,46 @@ export const mockUserConversations: UserConversation[] = [
         senderName: 'Nguyễn Hoàng Long'
       }
     ]
+  },
+  {
+    id: 'conv-admin',
+    targetUserId: 'admin-1',
+    targetUserName: 'Ban Quản Trị PetCare (Admin Support)',
+    targetUserAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200',
+    targetUserRole: 'Ban Kiểm Duyệt & Quản Trị Viên',
+    targetPetName: 'Hỗ trợ Báo cáo & Kiểm duyệt',
+    targetPetAvatar: '',
+    targetPetBreed: 'Hệ thống Quản trị',
+    isOnline: true,
+    lastMessage: 'Yêu cầu kiểm duyệt tin đăng và báo cáo của bạn đã được tiếp nhận và xử lý!',
+    lastMessageTime: '09:10',
+    unreadCount: 1,
+    messages: [
+      {
+        id: 'msg-admin-1',
+        senderId: 'admin-1',
+        sender: 'OTHER_USER',
+        text: 'Xin chào bạn! Đây là kênh liên lạc trực tiếp với Ban Quản Trị PetCare Hub. Mọi thắc mắc về kiểm duyệt tin đăng, báo cáo vi phạm hoặc hỗ trợ kỹ thuật sẽ được giải đáp tại đây.',
+        timestamp: '09:00',
+        senderName: 'Ban Quản Trị PetCare'
+      },
+      {
+        id: 'msg-admin-2',
+        senderId: 'user-1',
+        sender: 'USER',
+        text: 'Chào Admin, mình vừa gửi đơn báo cáo bài đăng có dấu hiệu buôn bán, nhờ Admin kiểm tra giúp ạ.',
+        timestamp: '09:05',
+        senderName: 'Bạn'
+      },
+      {
+        id: 'msg-admin-3',
+        senderId: 'admin-1',
+        sender: 'OTHER_USER',
+        text: 'Yêu cầu kiểm duyệt tin đăng và báo cáo của bạn đã được tiếp nhận và xử lý!',
+        timestamp: '09:10',
+        senderName: 'Ban Quản Trị PetCare'
+      }
+    ]
   }
 ];
 

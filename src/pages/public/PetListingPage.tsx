@@ -18,6 +18,7 @@ interface PetListingPageProps {
 export const PetListingPage: React.FC<PetListingPageProps> = ({ navigate }) => {
   const { pets } = useData();
   const { t, language } = useLanguage();
+  const isEn = language === 'en';
   const [selectedPetForAdoption, setSelectedPetForAdoption] = useState<Pet | null>(null);
 
   // Filters State
@@ -53,7 +54,11 @@ export const PetListingPage: React.FC<PetListingPageProps> = ({ navigate }) => {
       }
 
       // Species filter
-      if (speciesFilter !== 'ALL' && pet.species !== speciesFilter) return false;
+      if (speciesFilter === 'OTHER') {
+        if (pet.species === 'DOG' || pet.species === 'CAT') return false;
+      } else if (speciesFilter !== 'ALL' && pet.species !== speciesFilter) {
+        return false;
+      }
 
       // Gender filter
       if (genderFilter !== 'ALL' && pet.gender !== genderFilter) return false;
@@ -113,7 +118,8 @@ export const PetListingPage: React.FC<PetListingPageProps> = ({ navigate }) => {
     setSortBy('NEWEST');
   };
 
-  const isFiltered = searchQuery !== '' || 
+  const isFiltered = 
+    searchQuery !== '' || 
     speciesFilter !== 'ALL' || 
     genderFilter !== 'ALL' || 
     ageGroupFilter !== 'ALL' || 
@@ -235,21 +241,22 @@ export const PetListingPage: React.FC<PetListingPageProps> = ({ navigate }) => {
             )}
           </div>
 
-          {/* Species */}
+          {/* Species (Includes "Khác" / "Other") */}
           <div className="space-y-2">
             <label className="text-xs font-bold text-stone-800 dark:text-stone-200 block">{t('pets.filterSpecies')}</label>
-            <div className="grid grid-cols-3 gap-1.5">
+            <div className="grid grid-cols-2 gap-1.5">
               {[
                 { id: 'ALL', label: t('common.all') },
                 { id: 'DOG', label: t('common.dog') },
-                { id: 'CAT', label: t('common.cat') }
+                { id: 'CAT', label: t('common.cat') },
+                { id: 'OTHER', label: isEn ? 'Other' : 'Khác' }
               ].map(opt => (
                 <button
                   key={opt.id}
                   onClick={() => setSpeciesFilter(opt.id)}
                   className={`py-1.5 px-2 rounded-xl text-xs font-bold transition text-center cursor-pointer ${
                     speciesFilter === opt.id
-                      ? 'bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 shadow-sm'
+                      ? 'bg-[#d46b28] text-white shadow-sm'
                       : 'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
                   }`}
                 >
@@ -385,17 +392,19 @@ export const PetListingPage: React.FC<PetListingPageProps> = ({ navigate }) => {
                 <PetCard
                   key={pet.id}
                   pet={pet}
-                  onViewDetail={(id) => navigate(`/pets/${id}`)}
-                  onApplyAdopt={(p) => setSelectedPetForAdoption(p)}
+                  onSelect={() => navigate(`/pets/${pet.id}`)}
+                  onApplyAdopt={() => setSelectedPetForAdoption(pet)}
                 />
               ))}
             </div>
           ) : (
-            /* Empty State */
-            <div className="bg-white dark:bg-stone-900 p-12 rounded-3xl border border-dashed border-stone-300 dark:border-stone-800 text-center space-y-4">
-              <div className="space-y-1 max-w-sm mx-auto">
-                <h3 className="font-bold text-stone-900 dark:text-stone-100 text-base">{t('pets.noPetsFound')}</h3>
-                <p className="text-xs text-stone-500 dark:text-stone-400">
+            <div className="bg-white dark:bg-stone-900 rounded-3xl p-12 text-center border border-stone-200/80 dark:border-stone-800 shadow-sm space-y-4">
+              <div className="text-4xl">🔍</div>
+              <div className="space-y-1">
+                <h3 className="text-base font-bold text-stone-900 dark:text-stone-100">
+                  {t('pets.noResults')}
+                </h3>
+                <p className="text-xs text-stone-500 dark:text-stone-400 max-w-sm mx-auto">
                   {language === 'vi' 
                     ? 'Hãy thử điều chỉnh lại bộ lọc loài, khu vực hoặc tìm kiếm với từ khóa tổng quát hơn.' 
                     : 'Try adjusting species, location filters or search with general keywords.'}
@@ -442,8 +451,8 @@ export const PetListingPage: React.FC<PetListingPageProps> = ({ navigate }) => {
             <div className="space-y-4">
               <div>
                 <label className="text-xs font-bold text-stone-800 dark:text-stone-200 block mb-1">{t('pets.filterSpecies')}</label>
-                <div className="grid grid-cols-3 gap-2">
-                  {['ALL', 'DOG', 'CAT'].map(s => (
+                <div className="grid grid-cols-4 gap-2">
+                  {['ALL', 'DOG', 'CAT', 'OTHER'].map(s => (
                     <button
                       key={s}
                       onClick={() => setSpeciesFilter(s)}
@@ -451,7 +460,7 @@ export const PetListingPage: React.FC<PetListingPageProps> = ({ navigate }) => {
                         speciesFilter === s ? 'bg-[#d46b28] text-white' : 'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300'
                       }`}
                     >
-                      {s === 'ALL' ? t('common.all') : s === 'DOG' ? t('common.dog') : t('common.cat')}
+                      {s === 'ALL' ? t('common.all') : s === 'DOG' ? t('common.dog') : s === 'CAT' ? t('common.cat') : (isEn ? 'Other' : 'Khác')}
                     </button>
                   ))}
                 </div>
@@ -468,23 +477,26 @@ export const PetListingPage: React.FC<PetListingPageProps> = ({ navigate }) => {
                   <option value="Hồ Chí Minh">{translateCity('TP. Hồ Chí Minh', language)}</option>
                   <option value="Hà Nội">{translateCity('Hà Nội', language)}</option>
                   <option value="Đà Nẵng">{translateCity('Đà Nẵng', language)}</option>
+                  <option value="Bình Dương">{translateCity('Bình Dương', language)}</option>
+                  <option value="Đồng Nai">{translateCity('Đồng Nai', language)}</option>
+                  <option value="Cần Thơ">{translateCity('Cần Thơ', language)}</option>
                 </select>
               </div>
-            </div>
 
-            <div className="pt-4 border-t border-stone-200 dark:border-stone-800 flex gap-2">
-              <button
-                onClick={resetFilters}
-                className="flex-1 py-3 rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-bold text-xs cursor-pointer"
-              >
-                {t('common.reset')}
-              </button>
-              <button
-                onClick={() => setMobileFilterOpen(false)}
-                className="flex-1 py-3 rounded-xl bg-[#d46b28] text-white font-bold text-xs cursor-pointer"
-              >
-                {t('common.continue')}
-              </button>
+              <div className="flex justify-end gap-2 pt-2">
+                <button
+                  onClick={() => { resetFilters(); setMobileFilterOpen(false); }}
+                  className="px-4 py-2 bg-stone-100 dark:bg-stone-800 text-xs font-bold rounded-xl"
+                >
+                  {t('pets.resetFilters')}
+                </button>
+                <button
+                  onClick={() => setMobileFilterOpen(false)}
+                  className="px-5 py-2 bg-[#d46b28] text-white text-xs font-bold rounded-xl"
+                >
+                  {language === 'vi' ? 'Áp dụng' : 'Apply'}
+                </button>
+              </div>
             </div>
           </div>
         </div>

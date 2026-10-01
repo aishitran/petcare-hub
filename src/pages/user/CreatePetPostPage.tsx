@@ -112,7 +112,7 @@ export const CreatePetPostPage: React.FC<CreatePetPostPageProps> = ({ navigate }
   const [customCriteriaList, setCustomCriteriaList] = useState<string[]>([]);
   const [newCustomInput, setNewCustomInput] = useState<string>('');
 
-  // Photos
+  // Photos (Max 4)
   const [photos, setPhotos] = useState<string[]>([SAMPLE_PHOTO_CHOICES[0]]);
   const [submitted, setSubmitted] = useState(false);
 
@@ -148,7 +148,7 @@ export const CreatePetPostPage: React.FC<CreatePetPostPageProps> = ({ navigate }
   };
 
   const handleAddPhoto = (url: string) => {
-    if (url && !photos.includes(url)) {
+    if (url && !photos.includes(url) && photos.length < 4) {
       setPhotos([...photos, url]);
     }
   };
@@ -157,6 +157,21 @@ export const CreatePetPostPage: React.FC<CreatePetPostPageProps> = ({ navigate }
     if (photos.length > 1) {
       setPhotos(photos.filter(p => p !== url));
     }
+  };
+
+  const handleBrowseFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    Array.from(files).forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === 'string') {
+          setPhotos(prev => prev.length < 4 ? [...prev, reader.result as string] : prev);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -533,35 +548,74 @@ export const CreatePetPostPage: React.FC<CreatePetPostPageProps> = ({ navigate }
           </div>
         </div>
 
-        {/* Section 4: Photo Selection */}
+        {/* Section 4: Photo Selection (Supports File Browse ≤ 4 photos) */}
         <div className="space-y-4 pt-4 border-t border-stone-100">
-          <h3 className="font-bold text-stone-900 text-base flex items-center gap-2 border-b border-stone-100 pb-2">
-            <ImageIcon className="w-4 h-4 text-emerald-800" />
-            <span>{isEn ? '4. Pet Photos' : '4. Hình ảnh thú cưng'}</span>
-          </h3>
+          <div className="flex items-center justify-between border-b border-stone-100 pb-2">
+            <h3 className="font-bold text-stone-900 text-base flex items-center gap-2">
+              <ImageIcon className="w-4 h-4 text-emerald-800" />
+              <span>{isEn ? '4. Pet Photos (Max 4 Photos)' : '4. Hình ảnh thú cưng (Tối đa 4 ảnh)'}</span>
+            </h3>
+            <span className="text-xs font-bold text-stone-500">
+              {photos.length}/4 {isEn ? 'photos' : 'ảnh'}
+            </span>
+          </div>
 
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-stone-700 block">{isEn ? 'Selected Photos:' : 'Hình ảnh đã chọn:'}</label>
-            <div className="flex flex-wrap gap-3">
+          <div className="space-y-3">
+            <label className="text-xs font-bold text-stone-700 block">
+              {isEn ? 'Selected Photos & Upload from device:' : 'Hình ảnh đã chọn & Tải ảnh từ thiết bị:'}
+            </label>
+            
+            <div className="flex flex-wrap gap-3 items-center">
               {photos.map((p, idx) => (
-                <div key={idx} className="relative w-24 h-24 rounded-2xl overflow-hidden border border-stone-200 group">
+                <div key={idx} className="relative w-24 h-24 rounded-2xl overflow-hidden border border-stone-300 shadow-2xs group">
                   <img src={p} alt="" className="w-full h-full object-cover" />
                   {photos.length > 1 && (
                     <button
                       type="button"
                       onClick={() => handleRemovePhoto(p)}
-                      className="absolute top-1 right-1 w-5 h-5 bg-black/70 text-white rounded-full text-xs flex items-center justify-center hover:bg-rose-600 cursor-pointer"
+                      className="absolute top-1.5 right-1.5 w-6 h-6 bg-black/75 text-white rounded-full text-xs flex items-center justify-center hover:bg-rose-600 transition cursor-pointer shadow-xs"
+                      title={isEn ? 'Remove photo' : 'Xóa ảnh này'}
                     >
                       ✕
                     </button>
                   )}
+                  {idx === 0 && (
+                    <span className="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-black/60 text-white text-[9px] font-bold">
+                      {isEn ? 'Cover' : 'Ảnh bìa'}
+                    </span>
+                  )}
                 </div>
               ))}
+
+              {photos.length < 4 && (
+                <div>
+                  <input
+                    type="file"
+                    id="pet-post-file-upload"
+                    accept="image/*"
+                    multiple
+                    onChange={handleBrowseFiles}
+                    className="hidden"
+                  />
+                  <label
+                    htmlFor="pet-post-file-upload"
+                    className="w-24 h-24 rounded-2xl border-2 border-dashed border-emerald-600/60 hover:border-emerald-700 bg-emerald-50/50 hover:bg-emerald-50 text-emerald-800 flex flex-col items-center justify-center gap-1.5 transition cursor-pointer"
+                  >
+                    <Upload className="w-5 h-5" />
+                    <span className="text-[11px] font-bold">{isEn ? 'Browse File' : 'Chọn ảnh'}</span>
+                  </label>
+                </div>
+              )}
             </div>
+            <p className="text-[11px] text-stone-500">
+              {isEn 
+                ? 'Tip: Upload clear photos of your pet in well-lit conditions. Maximum 4 images allowed.' 
+                : 'Mẹo: Tải ảnh rõ mặt bé, chụp trong điều kiện đủ sáng. Tối đa 4 ảnh được tải lên.'}
+            </p>
           </div>
 
-          <div className="space-y-2">
-            <span className="text-xs font-bold text-stone-700 block">{isEn ? 'Pick from sample library:' : 'Chọn nhanh từ thư viện ảnh mẫu:'}</span>
+          <div className="space-y-2 pt-2 border-t border-stone-100">
+            <span className="text-xs font-bold text-stone-700 block">{isEn ? 'Or pick from sample pet photos:' : 'Hoặc chọn nhanh từ thư viện ảnh mẫu:'}</span>
             <div className="flex gap-2 overflow-x-auto pb-2">
               {SAMPLE_PHOTO_CHOICES.map((url, idx) => (
                 <img
@@ -569,7 +623,9 @@ export const CreatePetPostPage: React.FC<CreatePetPostPageProps> = ({ navigate }
                   src={url}
                   alt=""
                   onClick={() => handleAddPhoto(url)}
-                  className="w-16 h-16 rounded-xl object-cover border border-stone-200 cursor-pointer hover:scale-105 transition"
+                  className={`w-16 h-16 rounded-xl object-cover border border-stone-200 cursor-pointer hover:scale-105 transition ${
+                    photos.includes(url) ? 'ring-2 ring-emerald-700 opacity-60' : ''
+                  }`}
                 />
               ))}
             </div>

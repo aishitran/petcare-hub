@@ -2,7 +2,21 @@ import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useData } from '../../context/DataContext';
 import { useLanguage } from '../../context/LanguageContext';
-import { Menu, X, ExternalLink } from 'lucide-react';
+import { Menu, X, ExternalLink, LogOut } from 'lucide-react';
+
+interface NavItem {
+  label: string;
+  path: string;
+  badge?: number;
+  badgeColor?: string;
+  isAction?: boolean;
+  action?: () => void;
+}
+
+interface NavSection {
+  title: string;
+  items: NavItem[];
+}
 
 interface AdminLayoutProps {
   currentPath: string;
@@ -11,7 +25,7 @@ interface AdminLayoutProps {
 }
 
 export const AdminLayout: React.FC<AdminLayoutProps> = ({ currentPath, navigate, children }) => {
-  const { currentUser } = useAuth();
+  const { currentUser, logout } = useAuth();
   const { users, pets, applications, rescuePosts, reports } = useData();
   const { language, t } = useLanguage();
   const isEn = language === 'en';
@@ -20,7 +34,12 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ currentPath, navigate,
   const pendingPets = pets.filter(p => p.moderationStatus === 'PENDING_APPROVAL');
   const pendingReports = reports.filter(r => r.status === 'PENDING' || r.status === 'INVESTIGATING');
 
-  const navSections = [
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+  const navSections: NavSection[] = [
     {
       title: isEn ? 'General Administration' : 'Quản trị chung',
       items: [
@@ -53,6 +72,21 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ currentPath, navigate,
       items: [
         { label: isEn ? 'Analytics & Statistics' : 'Báo cáo Thống kê', path: '/admin/statistics' },
         { label: isEn ? 'System Audit Logs' : 'Nhật ký Hệ thống', path: '/admin/logs' },
+      ]
+    },
+    {
+      title: isEn ? 'Communication & Support' : 'Tin nhắn & Hỗ trợ',
+      items: [
+        { 
+          label: isEn ? 'User Messages & Support' : 'Tin nhắn từ Người dùng', 
+          path: '#admin-chat', 
+          badge: 1, 
+          badgeColor: 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 animate-pulse',
+          isAction: true,
+          action: () => {
+            window.dispatchEvent(new CustomEvent('open-admin-chat'));
+          }
+        }
       ]
     }
   ];
@@ -105,7 +139,14 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ currentPath, navigate,
                     return (
                       <button
                         key={item.path}
-                        onClick={() => { setSidebarOpen(false); navigate(item.path); }}
+                        onClick={() => { 
+                          setSidebarOpen(false); 
+                          if (item.isAction && item.action) {
+                            item.action();
+                          } else {
+                            navigate(item.path); 
+                          }
+                        }}
                         className={`w-full text-left px-3 py-2 rounded-xl text-xs font-medium transition flex items-center justify-between gap-2 cursor-pointer ${
                           isActive
                             ? 'bg-[#d46b28] text-white font-bold shadow-xs'
@@ -134,7 +175,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ currentPath, navigate,
 
         </div>
 
-        {/* Back to Public Site */}
+        {/* Footer Actions: Back to Public + Logout */}
         <div className="pt-4 border-t border-stone-800 space-y-2">
           <button
             onClick={() => navigate('/')}
@@ -142,6 +183,14 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ currentPath, navigate,
           >
             <span>{isEn ? 'Back to Public Site' : 'Về trang người dùng'}</span>
             <ExternalLink className="w-3.5 h-3.5" />
+          </button>
+
+          <button
+            onClick={handleLogout}
+            className="w-full py-2 px-3 rounded-xl bg-rose-950/60 hover:bg-rose-900 border border-rose-800/60 text-rose-300 text-xs font-semibold transition flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            <span>{isEn ? 'Logout' : 'Đăng xuất Admin'}</span>
           </button>
         </div>
       </aside>

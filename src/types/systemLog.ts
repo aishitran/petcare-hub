@@ -30,8 +30,11 @@ export interface SystemAuditLog {
   id: string;
   userId?: string;
   userName?: string;
+  userAvatar?: string;
   actorId?: string;
   actorName?: string;
+  actorAvatar?: string;
+  actorRole?: 'ADMIN' | 'USER' | 'SHELTER_STAFF' | 'SYSTEM';
   action?: SystemActionType;
   actionType?: string;
   entity?: string; // 'Pet', 'Application', 'User', 'Rescue', 'Report', 'Identity'

@@ -5,6 +5,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { RescuePost } from '../../types/rescue';
 import { translateAddress, translateShelterName } from '../../utils/addressTranslator';
 import { translateRescuePostData } from '../../utils/dataTranslator';
+import { ReportModal } from '../../components/common/ReportModal';
 import { 
   Flame, 
   MapPin, 
@@ -19,7 +20,9 @@ import {
   User,
   ShieldCheck,
   Send,
-  Building
+  Building,
+  ShieldAlert,
+  MessageSquare
 } from 'lucide-react';
 
 interface RescueDetailPageProps {
@@ -31,12 +34,14 @@ export const RescueDetailPage: React.FC<RescueDetailPageProps> = ({ rescueId, na
   const { rescuePosts, supportRescuePost } = useData();
   const { currentUser } = useAuth();
   const { language, t } = useLanguage();
+  const isEn = language === 'en';
 
   const rawPost = rescuePosts.find(r => r.id === rescueId);
   const post = rawPost ? translateRescuePostData(rawPost, language) : null;
   const [activeImg, setActiveImg] = useState(0);
   const [copied, setCopied] = useState(false);
   const [isSupportModalOpen, setIsSupportModalOpen] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [supportMessage, setSupportMessage] = useState('');
   const [supportSuccess, setSupportSuccess] = useState(false);
 
@@ -58,6 +63,21 @@ export const RescueDetailPage: React.FC<RescueDetailPageProps> = ({ rescueId, na
     navigator.clipboard.writeText(window.location.href);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleOpenDirectChat = () => {
+    window.dispatchEvent(
+      new CustomEvent('open-direct-chat', {
+        detail: {
+          targetUserId: post.creatorUserId || 'shelter-station',
+          targetUserName: post.contactPerson || post.shelterName || (isEn ? 'Rescue Team' : 'Đội cứu hộ'),
+          targetUserAvatar: post.images[0],
+          targetUserRole: isEn ? 'Rescue Coordinator' : 'Điều phối viên cứu trợ',
+          targetPetName: post.title,
+          targetPetAvatar: post.images[0]
+        }
+      })
+    );
   };
 
   const handleSupportSubmit = (e: React.FormEvent) => {
@@ -98,105 +118,79 @@ export const RescueDetailPage: React.FC<RescueDetailPageProps> = ({ rescueId, na
         {/* Left Column: Photos & Details */}
         <div className="lg:col-span-7 space-y-6">
           
-          {/* Main Photo */}
-          <div className="relative rounded-3xl overflow-hidden bg-stone-900 aspect-[4/3] shadow-md border border-stone-200 dark:border-stone-800">
+          <div className="relative rounded-3xl overflow-hidden bg-stone-900 shadow-md border border-stone-200 dark:border-stone-800 aspect-[4/3]">
             <img
               src={post.images[activeImg] || post.images[0]}
               alt={post.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition duration-300"
             />
+            
             {post.priority === 'URGENT' && (
-              <div className="absolute top-4 left-4 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-rose-700 text-white shadow-md">
-                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
-                <span>{language === 'en' ? 'URGENT SOS' : 'KHẨN CẤP'}</span>
+              <div className="absolute top-4 left-4 flex items-center gap-2">
+                <span className="px-3.5 py-1.5 rounded-full bg-rose-600 text-white text-xs font-black uppercase tracking-wider flex items-center gap-1.5 shadow-lg animate-pulse">
+                  <Flame className="w-4 h-4 fill-white" />
+                  <span>{isEn ? 'Emergency SOS' : 'Cứu hộ khẩn cấp'}</span>
+                </span>
               </div>
             )}
           </div>
 
-          {/* Thumbnails */}
-          {post.images && post.images.length > 1 && (
+          {post.images.length > 1 && (
             <div className="flex gap-3 overflow-x-auto pb-2">
-              {post.images.map((url: string, idx: number) => (
+              {post.images.map((img: string, idx: number) => (
                 <button
                   key={idx}
                   onClick={() => setActiveImg(idx)}
-                  className={`w-20 h-20 rounded-2xl overflow-hidden shrink-0 border-2 transition cursor-pointer ${
-                    activeImg === idx ? 'border-rose-600' : 'border-stone-200 dark:border-stone-700 opacity-70'
+                  className={`relative w-20 h-20 rounded-2xl overflow-hidden shrink-0 border-2 transition cursor-pointer ${
+                    activeImg === idx
+                      ? 'border-[#d46b28] scale-105 shadow-sm'
+                      : 'border-transparent opacity-70 hover:opacity-100'
                   }`}
                 >
-                  <img src={url} alt="" className="w-full h-full object-cover" />
+                  <img src={img} alt="" className="w-full h-full object-cover" />
                 </button>
               ))}
             </div>
           )}
 
-          {/* Detailed Description */}
-          <div className="bg-white dark:bg-stone-900 p-6 rounded-3xl border border-stone-200/80 dark:border-stone-800 shadow-sm space-y-4">
-            <h3 className="font-bold text-stone-900 dark:text-stone-100 text-base">{language === 'en' ? 'Detailed Rescue Case Description' : 'Mô tả chi tiết ca cứu hộ'}</h3>
-            <p className="text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed whitespace-pre-line font-normal">
+          {/* Description Card */}
+          <div className="bg-white dark:bg-stone-900 p-6 rounded-3xl border border-stone-200/80 dark:border-stone-800 shadow-2xs space-y-4">
+            <h3 className="font-bold text-stone-900 dark:text-stone-100 text-base">
+              {language === 'en' ? 'Incident Description & Pet Condition' : 'Tình trạng hiện tại & Mô tả ca cứu hộ'}
+            </h3>
+            <p className="text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed whitespace-pre-line">
               {post.description}
-            </p>
-          </div>
-
-          {/* Transparency & Safety Notice */}
-          <div className="p-4 bg-stone-100 dark:bg-stone-850 rounded-3xl border border-stone-200 dark:border-stone-700 space-y-2 text-xs text-stone-700 dark:text-stone-300">
-            <div className="flex items-center gap-2 font-bold text-stone-900 dark:text-stone-100">
-              <ShieldCheck className="w-4 h-4 text-emerald-800 dark:text-emerald-400" />
-              <span>{language === 'en' ? 'PetCare Hub Rescue Transparency Principles' : 'Nguyên tắc minh bạch cứu trợ PetCare Hub'}</span>
-            </div>
-            <p className="text-[11px] leading-relaxed text-stone-600 dark:text-stone-400">
-              {language === 'en'
-                ? 'All hospital fees and supplies require clinical receipts, prescriptions, or direct vet confirmation to ensure community integrity.'
-                : 'Các thông tin viện phí và vật tư cần được cập nhật hóa đơn, đơn thuốc hoặc xác nhận trực tiếp từ phòng khám/bác sĩ thú y để bảo vệ lòng tin của cộng đồng.'}
             </p>
           </div>
 
         </div>
 
-        {/* Right Column: Key Needs & Action Card */}
+        {/* Right Column: Station info & Aid Form */}
         <div className="lg:col-span-5 space-y-6">
           
-          <div className="bg-white dark:bg-stone-900 p-6 rounded-3xl border border-stone-200/80 dark:border-stone-800 shadow-sm space-y-5 sticky top-24">
+          <div className="bg-white dark:bg-stone-900 p-6 rounded-3xl border border-stone-200/80 dark:border-stone-800 shadow-2xs space-y-5">
             
             <div className="space-y-2 border-b border-stone-100 dark:border-stone-800 pb-4">
-              <span className="text-[11px] font-bold text-rose-600 dark:text-rose-400 uppercase tracking-wider block">
-                {t('rescue.priorityUrgent')}
-              </span>
-              <h1 className="text-2xl font-black text-stone-900 dark:text-stone-100 font-display leading-snug">
-                {post.title}
-              </h1>
+              <div className="flex items-center gap-2 text-xs font-semibold text-rose-600 dark:text-rose-400">
+                <Flame className="w-4 h-4" />
+                <span>{language === 'en' ? 'Rescue Alert Case' : 'Tin tiếp nhận cứu trợ'}</span>
+              </div>
+              <h1 className="text-2xl font-black text-stone-900 dark:text-stone-100 font-display">{post.title}</h1>
               
               <div className="flex items-center gap-1.5 text-xs text-stone-600 dark:text-stone-400">
-                <MapPin className="w-3.5 h-3.5 text-[#d46b28] dark:text-amber-400 shrink-0" />
-                <span>{translateAddress(post.supportLocation, language)}</span>
+                <MapPin className="w-3.5 h-3.5 text-[#d46b28] dark:text-amber-400" />
+                <span>{translateAddress(post.supportLocation || post.shelterAddress, language)}</span>
               </div>
             </div>
 
-            {/* Need Highlights */}
-            <div className="p-4 bg-rose-50/80 dark:bg-rose-950/40 rounded-2xl border border-rose-100 dark:border-rose-900/40 space-y-2">
-              <span className="text-[10px] font-bold text-rose-800 dark:text-rose-300 uppercase block">{language === 'en' ? 'Specific Rescue Need:' : 'Nhu cầu cứu trợ cụ thể:'}</span>
-              <p className="text-base font-black text-rose-950 dark:text-rose-200 font-display">{post.quantityNeeded}</p>
-              <div className="text-[11px] text-stone-600 dark:text-stone-400 flex items-center justify-between pt-1 border-t border-rose-200/50 dark:border-rose-800/40">
-                <span>{language === 'en' ? 'Deadline:' : 'Hạn cần tiếp sức:'}</span>
-                <span className="font-bold text-stone-900 dark:text-stone-100">{post.requiredDate}</span>
-              </div>
-            </div>
-
-            {/* DEDICATED SHELTER / RESCUE STATION & HOTLINE & ADDRESS */}
-            <div className="p-4 bg-stone-50 dark:bg-stone-800/80 rounded-2xl border border-stone-200/80 dark:border-stone-700 space-y-3 text-xs">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-bold text-stone-500 dark:text-stone-400 uppercase block tracking-wider">
-                  {t('rescue.shelterStation')}
+            {/* Receiving Shelter Info */}
+            <div className="p-4 bg-stone-50 dark:bg-stone-800/70 rounded-2xl border border-stone-200/70 dark:border-stone-700 space-y-3">
+              <div>
+                <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">
+                  {language === 'en' ? 'Receiving Station / Shelter:' : 'Trạm tiếp nhận & điều phối:'}
                 </span>
-                <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-900 dark:text-emerald-300 text-[10px] font-bold">
-                  {t('common.noProfiteering')}
-                </span>
-              </div>
-
-              <div className="space-y-1">
-                <h4 className="font-bold text-stone-900 dark:text-stone-100 text-sm flex items-center gap-1.5">
-                  <Building className="w-4 h-4 text-[#d46b28] dark:text-amber-400 shrink-0" />
-                  <span>{translateShelterName(post.shelterName, language) || (language === 'vi' ? 'Trạm Cứu Hộ Động Vật Liên Kết' : 'Partner Animal Shelter')}</span>
+                <h4 className="font-bold text-stone-900 dark:text-stone-100 text-sm mt-0.5">
+                  {language === 'en' ? translateShelterName(post.shelterName || 'Local Animal Shelter', 'en') : (post.shelterName || 'Trạm cứu hộ địa phương')}
                 </h4>
                 <p className="text-[11px] text-stone-500 dark:text-stone-400 flex items-start gap-1.5 pt-0.5">
                   <MapPin className="w-3.5 h-3.5 text-stone-400 shrink-0 mt-0.5" />
@@ -227,8 +221,8 @@ export const RescueDetailPage: React.FC<RescueDetailPageProps> = ({ rescueId, na
               </p>
             </div>
 
-            {/* Action CTA */}
-            <div className="pt-1 space-y-2">
+            {/* Action CTAs */}
+            <div className="pt-1 space-y-2.5">
               <button
                 onClick={() => setIsSupportModalOpen(true)}
                 className="w-full py-3.5 rounded-2xl bg-[#d46b28] hover:bg-[#ba591a] text-white text-xs font-bold tracking-wide shadow-md transition cursor-pointer"
@@ -237,10 +231,19 @@ export const RescueDetailPage: React.FC<RescueDetailPageProps> = ({ rescueId, na
               </button>
 
               <button
-                onClick={() => navigate(`/reports?targetType=RESCUE_POST&targetId=${post.id}`)}
-                className="w-full py-2 text-center text-[11px] font-semibold text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 transition cursor-pointer"
+                onClick={handleOpenDirectChat}
+                className="w-full py-3 rounded-2xl bg-[#fde2cd] dark:bg-amber-950/70 hover:bg-[#fcd4b4] text-[#9c3810] dark:text-amber-300 text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer shadow-2xs"
               >
-                {language === 'en' ? 'Report suspicious or fraudulent post' : 'Báo cáo tin đăng có dấu hiệu gian lận'}
+                <MessageSquare className="w-4 h-4" />
+                <span>{isEn ? 'Message Rescue Dispatcher' : 'Nhắn tin cho điều phối viên'}</span>
+              </button>
+
+              <button
+                onClick={() => setIsReportModalOpen(true)}
+                className="w-full py-2 text-center text-[11px] font-semibold text-stone-400 hover:text-rose-500 transition cursor-pointer flex items-center justify-center gap-1"
+              >
+                <ShieldAlert className="w-3.5 h-3.5" />
+                <span>{language === 'en' ? 'Report suspicious or fraudulent post' : 'Báo cáo tin đăng có dấu hiệu gian lận'}</span>
               </button>
             </div>
 
@@ -323,6 +326,18 @@ export const RescueDetailPage: React.FC<RescueDetailPageProps> = ({ rescueId, na
 
           </div>
         </div>
+      )}
+
+      {/* REPORT MODAL */}
+      {isReportModalOpen && (
+        <ReportModal
+          isOpen={isReportModalOpen}
+          onClose={() => setIsReportModalOpen(false)}
+          targetType="RESCUE_POST"
+          targetId={post.id}
+          targetTitle={`Ca cứu hộ ${post.title}`}
+          targetUserName={post.contactPerson || post.shelterName}
+        />
       )}
 
     </div>

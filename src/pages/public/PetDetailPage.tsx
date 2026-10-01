@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
 import { StatusBadge } from '../../components/common/StatusBadge';
 import { AdoptionWizardModal } from '../../components/user/AdoptionWizardModal';
+import { ReportModal } from '../../components/common/ReportModal';
 import { translateAddress } from '../../utils/addressTranslator';
 import { translateBreed, translateAgeDisplay, translatePersonalityTag } from '../../utils/petTranslator';
 import { translateDynamicText } from '../../utils/dataTranslator';
@@ -22,7 +23,10 @@ import {
   Check, 
   Award,
   Info,
-  UserCheck
+  UserCheck,
+  MessageSquare,
+  ShieldAlert,
+  Flag
 } from 'lucide-react';
 
 interface PetDetailPageProps {
@@ -39,6 +43,8 @@ export const PetDetailPage: React.FC<PetDetailPageProps> = ({ petId, navigate })
   const petRaw = getPetById(petId);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isAdoptionModalOpen, setIsAdoptionModalOpen] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [reportTargetType, setReportTargetType] = useState<'PET_POST' | 'USER'>('PET_POST');
   const [copied, setCopied] = useState(false);
 
   if (!petRaw) {
@@ -69,6 +75,32 @@ export const PetDetailPage: React.FC<PetDetailPageProps> = ({ petId, navigate })
     navigator.clipboard.writeText(window.location.href);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleOpenDirectChat = () => {
+    window.dispatchEvent(
+      new CustomEvent('open-direct-chat', {
+        detail: {
+          targetUserId: pet.creatorUserId,
+          targetUserName: pet.creatorUserName,
+          targetUserAvatar: pet.creatorUserAvatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100',
+          targetUserRole: isEn ? 'Fosterer / Post Owner' : 'Người đăng tin & Fosterer',
+          targetPetName: pet.name,
+          targetPetAvatar: pet.photos[0],
+          targetPetBreed: pet.breed
+        }
+      })
+    );
+  };
+
+  const openReportForPet = () => {
+    setReportTargetType('PET_POST');
+    setIsReportModalOpen(true);
+  };
+
+  const openReportForUser = () => {
+    setReportTargetType('USER');
+    setIsReportModalOpen(true);
   };
 
   const translatedBreed = translateBreed(pet.breed, language);
@@ -120,140 +152,123 @@ export const PetDetailPage: React.FC<PetDetailPageProps> = ({ petId, navigate })
             <img
               src={pet.photos[activeImageIndex] || pet.photos[0]}
               alt={pet.name}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition duration-300"
             />
             
-            <div className="absolute top-4 left-4">
+            <div className="absolute top-3.5 left-3.5">
               <StatusBadge status={pet.status} />
             </div>
 
-            {pet.photos.length > 1 && (
-              <div className="absolute bottom-4 right-4 bg-stone-900/80 backdrop-blur-md text-white text-[11px] font-bold px-3 py-1 rounded-full">
-                {activeImageIndex + 1} / {pet.photos.length}
-              </div>
-            )}
+            {/* Rescue / Verified badge */}
+            <div className="absolute bottom-3.5 left-3.5 flex items-center gap-2">
+              <span className="px-3 py-1 rounded-xl bg-black/60 backdrop-blur-md text-white text-[11px] font-bold flex items-center gap-1 border border-white/20">
+                <ShieldCheck className="w-3.5 h-3.5 text-teal-400" />
+                <span>{isEn ? 'Verified Medical Records' : 'Đã kiểm tra sổ khám y tế'}</span>
+              </span>
+            </div>
           </div>
 
-          {/* Thumbnails row */}
+          {/* Thumbnail Strip */}
           {pet.photos.length > 1 && (
             <div className="flex gap-3 overflow-x-auto pb-2">
-              {pet.photos.map((url, idx) => (
+              {pet.photos.map((img, idx) => (
                 <button
                   key={idx}
                   onClick={() => setActiveImageIndex(idx)}
-                  className={`w-20 h-20 rounded-2xl overflow-hidden shrink-0 border-2 transition cursor-pointer ${
-                    activeImageIndex === idx ? 'border-stone-900 dark:border-amber-400 ring-2 ring-stone-900/20' : 'border-stone-200 dark:border-stone-700 opacity-70 hover:opacity-100'
+                  className={`relative w-20 h-20 rounded-2xl overflow-hidden shrink-0 border-2 transition cursor-pointer ${
+                    activeImageIndex === idx
+                      ? 'border-[#d46b28] scale-105 shadow-sm'
+                      : 'border-transparent opacity-70 hover:opacity-100'
                   }`}
                 >
-                  <img src={url} alt="" className="w-full h-full object-cover" />
+                  <img src={img} alt="" className="w-full h-full object-cover" />
                 </button>
               ))}
             </div>
           )}
 
-          {/* Quick Specifications Grid */}
-          <div className="bg-white dark:bg-stone-900 p-5 rounded-3xl border border-stone-200/80 dark:border-stone-800 shadow-2xs grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-            <div className="p-3 bg-stone-50 dark:bg-stone-800 rounded-2xl">
-              <span className="text-[10px] font-bold text-stone-500 dark:text-stone-400 uppercase block">{t('pets.filterGender')}</span>
-              <span className="text-sm font-black text-stone-900 dark:text-stone-100">{pet.gender === 'MALE' ? t('common.male') : t('common.female')}</span>
+          {/* Quick Pet Bio & Specs Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="p-3.5 bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/80 dark:border-stone-800 shadow-2xs text-center space-y-0.5">
+              <span className="text-[10px] text-stone-500 dark:text-stone-400 uppercase font-bold tracking-wider">{t('pets.specBreed')}</span>
+              <p className="text-xs font-bold text-stone-900 dark:text-stone-100 truncate">{translatedBreed}</p>
             </div>
-            <div className="p-3 bg-stone-50 dark:bg-stone-800 rounded-2xl">
-              <span className="text-[10px] font-bold text-stone-500 dark:text-stone-400 uppercase block">{t('pets.filterAge')}</span>
-              <span className="text-sm font-black text-stone-900 dark:text-stone-100">{translatedAge}</span>
+            
+            <div className="p-3.5 bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/80 dark:border-stone-800 shadow-2xs text-center space-y-0.5">
+              <span className="text-[10px] text-stone-500 dark:text-stone-400 uppercase font-bold tracking-wider">{t('pets.specAge')}</span>
+              <p className="text-xs font-bold text-stone-900 dark:text-stone-100">{translatedAge}</p>
             </div>
-            <div className="p-3 bg-stone-50 dark:bg-stone-800 rounded-2xl">
-              <span className="text-[10px] font-bold text-stone-500 dark:text-stone-400 uppercase block">{isEn ? 'Weight' : 'Cân nặng'}</span>
-              <span className="text-sm font-black text-stone-900 dark:text-stone-100">{pet.weightKg || (pet.health && pet.health.weightKg) || 8} kg</span>
+
+            <div className="p-3.5 bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/80 dark:border-stone-800 shadow-2xs text-center space-y-0.5">
+              <span className="text-[10px] text-stone-500 dark:text-stone-400 uppercase font-bold tracking-wider">{t('pets.specGender')}</span>
+              <p className="text-xs font-bold text-stone-900 dark:text-stone-100">
+                {pet.gender === 'MALE' ? t('common.male') : t('common.female')}
+              </p>
             </div>
-            <div className="p-3 bg-stone-50 dark:bg-stone-800 rounded-2xl">
-              <span className="text-[10px] font-bold text-stone-500 dark:text-stone-400 uppercase block">{t('pets.filterSize')}</span>
-              <span className="text-sm font-black text-stone-900 dark:text-stone-100">
-                {pet.size === 'SMALL' 
-                  ? (isEn ? 'Small (< 10kg)' : 'Nhỏ (< 10kg)') 
-                  : pet.size === 'MEDIUM' 
-                  ? (isEn ? 'Medium (10-25kg)' : 'Vừa (10-25kg)') 
-                  : (isEn ? 'Large (> 25kg)' : 'Lớn (> 25kg)')}
-              </span>
+
+            <div className="p-3.5 bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/80 dark:border-stone-800 shadow-2xs text-center space-y-0.5">
+              <span className="text-[10px] text-stone-500 dark:text-stone-400 uppercase font-bold tracking-wider">{t('pets.specSize')}</span>
+              <p className="text-xs font-bold text-stone-900 dark:text-stone-100">{pet.size || 'MEDIUM'}</p>
             </div>
           </div>
 
-          {/* Poster's Heartfelt Story / Re-homing Reason */}
-          {(pet.rehomingReason || pet.adoptionReqs?.postingReason || pet.requirements?.postingReason) && (
-            <div className="bg-gradient-to-br from-[#fde2cd]/80 via-[#f8eade]/60 to-[#faf4ee] dark:from-stone-900 dark:via-stone-900 dark:to-stone-950 p-6 rounded-3xl border border-[#f0ceb2] dark:border-stone-800 shadow-2xs space-y-3">
-              <div className="flex items-center justify-between gap-3 border-b border-[#efe2d3] dark:border-stone-800 pb-3">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-[#d46b28] text-white flex items-center justify-center shrink-0 shadow-xs">
-                    <Heart className="w-4 h-4 fill-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-stone-900 dark:text-stone-100 text-sm sm:text-base font-display">
-                      {isEn ? `Message & Re-homing Reason from ${pet.creatorUserName}` : `Lời tâm sự & Lý do tìm chủ mới từ ${pet.creatorUserName}`}
-                    </h3>
-                    <span className="text-[11px] text-[#9c3810] dark:text-amber-400 font-medium">
-                      {isEn ? 'Sincere sharing from the current caregiver' : 'Chia sẻ từ người trực tiếp nuôi dưỡng / cứu hộ bé'}
-                    </span>
-                  </div>
-                </div>
-              </div>
+          {/* Detailed Story & Personality Section */}
+          <div className="bg-white dark:bg-stone-900 p-6 rounded-3xl border border-stone-200/80 dark:border-stone-800 shadow-2xs space-y-4">
+            <h3 className="font-bold text-stone-900 dark:text-stone-100 text-base flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-[#d46b28] dark:text-amber-400" />
+              <span>{isEn ? `About ${pet.name} & Rescue Story` : `Câu chuyện & Đặc điểm của ${pet.name}`}</span>
+            </h3>
 
-              <div className="relative pl-3.5 border-l-2 border-[#d46b28] dark:border-amber-400 py-1">
-                <p className="text-xs sm:text-sm text-[#2b2523] dark:text-stone-200 leading-relaxed italic font-normal">
-                  "{translateDynamicText(pet.rehomingReason || pet.adoptionReqs?.postingReason || pet.requirements?.postingReason || '', language)}"
+            <div className="text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed space-y-3 whitespace-pre-line">
+              {translatedDesc}
+            </div>
+
+            {/* Rehoming Reason if provided */}
+            {pet.rehomingReason && (
+              <div className="p-4 bg-amber-50/80 dark:bg-amber-950/40 rounded-2xl border border-amber-200/70 dark:border-amber-900/50 text-xs text-amber-950 dark:text-amber-200 space-y-1">
+                <span className="font-bold flex items-center gap-1.5 text-[#9c3810] dark:text-amber-400">
+                  <Info className="w-3.5 h-3.5" />
+                  <span>{isEn ? 'Reason for Rehoming / Rescue Context:' : 'Hoàn cảnh cứu hộ & Lý do tìm chủ mới:'}</span>
+                </span>
+                <p className="text-stone-700 dark:text-stone-300 leading-relaxed">
+                  {translateDynamicText(pet.rehomingReason, language)}
                 </p>
               </div>
-
-              <div className="p-2.5 rounded-xl bg-white/80 dark:bg-stone-950/60 text-[11px] text-[#665851] dark:text-stone-400 flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#d46b28] shrink-0" />
-                <span>
-                  {isEn 
-                    ? 'Petcare Hub connects adopters with empathy. Sincere sharing ensures pets transition into loving, prepared families.' 
-                    : 'Petcare Hub kết nối dựa trên sự thấu hiểu và tình thương. Lời chia sẻ chân thành giúp bạn nhỏ tìm được đúng gia đình phù hợp nhất.'}
-                </span>
-              </div>
-            </div>
-          )}
-
-          {/* Pet Story & History */}
-          <div className="bg-white dark:bg-stone-900 p-6 rounded-3xl border border-stone-200/80 dark:border-stone-800 shadow-2xs space-y-4">
-            <h3 className="font-bold text-stone-900 dark:text-stone-100 text-base font-display">
-              {isEn ? `Story & Background of ${pet.name}` : `Câu chuyện & Hoàn cảnh của ${pet.name}`}
-            </h3>
-            <p className="text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed whitespace-pre-line font-normal">
-              {translatedDesc}
-            </p>
+            )}
           </div>
 
-          {/* Health & Medical History */}
+          {/* Health & Medical Background */}
           <div className="bg-white dark:bg-stone-900 p-6 rounded-3xl border border-stone-200/80 dark:border-stone-800 shadow-2xs space-y-4">
-            <h3 className="font-bold text-stone-900 dark:text-stone-100 text-base font-display">
-              {t('pets.medicalHistory')}
+            <h3 className="font-bold text-stone-900 dark:text-stone-100 text-base flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-emerald-700 dark:text-emerald-400" />
+              <span>{t('pets.healthSection')}</span>
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-stone-50 dark:bg-stone-800 text-xs">
-                <span className={`w-2 h-2 rounded-full shrink-0 ${pet.health.isVaccinated || pet.health.vaccinated ? 'bg-emerald-600' : 'bg-rose-500'}`}></span>
+                <span className={`w-2 h-2 rounded-full shrink-0 ${pet.health.isSterilized ? 'bg-emerald-600' : 'bg-amber-500'}`}></span>
                 <span className="font-semibold text-stone-800 dark:text-stone-200">
-                  {pet.health.isVaccinated || pet.health.vaccinated 
-                    ? (isEn ? 'Vaccinated (Core Diseases)' : 'Đã tiêm phòng bệnh') 
-                    : (isEn ? 'Not Yet Vaccinated' : 'Chưa tiêm phòng')}
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-stone-50 dark:bg-stone-800 text-xs">
-                <span className={`w-2 h-2 rounded-full shrink-0 ${pet.health.isSterilized || pet.health.neutered ? 'bg-emerald-600' : 'bg-amber-500'}`}></span>
-                <span className="font-semibold text-stone-800 dark:text-stone-200">
-                  {pet.health.isSterilized || pet.health.neutered 
-                    ? (isEn ? 'Spayed / Neutered' : 'Đã triệt sản') 
+                  {pet.health.isSterilized 
+                    ? (isEn ? 'Neutered / Spayed' : 'Đã triệt sản') 
                     : (isEn ? 'Not Yet Neutered' : 'Chưa triệt sản')}
                 </span>
               </div>
 
               <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-stone-50 dark:bg-stone-800 text-xs">
-                <span className={`w-2 h-2 rounded-full shrink-0 ${pet.health.isRabiesVaccinated || pet.health.vaccinated ? 'bg-emerald-600' : 'bg-rose-500'}`}></span>
+                <span className={`w-2 h-2 rounded-full shrink-0 ${pet.health.isVaccinated ? 'bg-emerald-600' : 'bg-amber-500'}`}></span>
                 <span className="font-semibold text-stone-800 dark:text-stone-200">
-                  {pet.health.isRabiesVaccinated || pet.health.vaccinated 
-                    ? (isEn ? 'Rabies Shot Completed' : 'Đã tiêm phòng dại') 
-                    : (isEn ? 'No Rabies Shot' : 'Chưa tiêm dại')}
+                  {pet.health.isVaccinated 
+                    ? (isEn ? 'Vaccinated (Core)' : 'Đã tiêm phòng đầy đủ') 
+                    : (isEn ? 'Pending Vaccines' : 'Chưa tiêm phòng')}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-stone-50 dark:bg-stone-800 text-xs">
+                <span className={`w-2 h-2 rounded-full shrink-0 ${pet.health.isRabiesVaccinated ? 'bg-emerald-600' : 'bg-amber-500'}`}></span>
+                <span className="font-semibold text-stone-800 dark:text-stone-200">
+                  {pet.health.isRabiesVaccinated 
+                    ? (isEn ? 'Rabies Vaccinated' : 'Đã tiêm phòng dại') 
+                    : (isEn ? 'Rabies Vaccine Pending' : 'Chưa tiêm phòng dại')}
                 </span>
               </div>
 
@@ -279,15 +294,15 @@ export const PetDetailPage: React.FC<PetDetailPageProps> = ({ petId, navigate })
 
         </div>
 
-        {/* RIGHT COLUMN: Action Card & Poster Info */}
+        {/* RIGHT COLUMN: Action Card & Poster Info (Layout Fixed: No overlapping sticky) */}
         <div className="lg:col-span-5 space-y-6">
           
           {/* Header & Primary Apply Card */}
-          <div className="bg-white dark:bg-stone-900 p-6 rounded-3xl border border-stone-200/80 dark:border-stone-800 shadow-2xs space-y-5 sticky top-24">
+          <div className="bg-white dark:bg-stone-900 p-6 rounded-3xl border border-stone-200/80 dark:border-stone-800 shadow-2xs space-y-5">
             
             <div className="space-y-2 border-b border-stone-100 dark:border-stone-800 pb-4">
               <div className="flex items-center gap-2 text-xs font-semibold text-stone-600 dark:text-stone-400">
-                <span>{pet.species === 'DOG' ? t('common.dog') : t('common.cat')}</span>
+                <span>{pet.species === 'DOG' ? t('common.dog') : pet.species === 'CAT' ? t('common.cat') : t('common.other')}</span>
                 <span>•</span>
                 <span>{translatedBreed}</span>
               </div>
@@ -364,40 +379,82 @@ export const PetDetailPage: React.FC<PetDetailPageProps> = ({ petId, navigate })
               </ul>
             </div>
 
-            {/* Primary Action Button */}
-            <div className="pt-3 border-t border-stone-100 dark:border-stone-800 space-y-2">
+            {/* Primary Action Buttons */}
+            <div className="pt-3 border-t border-stone-100 dark:border-stone-800 space-y-2.5">
               {isOwner ? (
                 <div className="p-3 bg-stone-100 dark:bg-stone-800 rounded-2xl text-center text-xs font-bold text-stone-700 dark:text-stone-300">
                   {isEn ? 'You posted this pet profile' : 'Đây là tin thú cưng do bạn đăng tải'}
                 </div>
               ) : canApply ? (
-                <button
-                  onClick={() => setIsAdoptionModalOpen(true)}
-                  className="w-full py-3.5 rounded-2xl bg-[#d46b28] hover:bg-[#ba591a] text-white text-xs font-bold tracking-wide shadow-sm transition cursor-pointer"
-                >
-                  {isEn ? `Apply to Adopt ${pet.name}` : `Nộp đơn nhận nuôi bé ${pet.name}`}
-                </button>
+                <div className="space-y-2">
+                  <button
+                    onClick={() => setIsAdoptionModalOpen(true)}
+                    className="w-full py-3.5 rounded-2xl bg-[#d46b28] hover:bg-[#ba591a] text-white text-xs font-bold tracking-wide shadow-sm transition cursor-pointer"
+                  >
+                    {isEn ? `Apply to Adopt ${pet.name}` : `Nộp đơn nhận nuôi bé ${pet.name}`}
+                  </button>
+
+                  <button
+                    onClick={handleOpenDirectChat}
+                    className="w-full py-3 rounded-2xl bg-[#fde2cd] dark:bg-amber-950/70 hover:bg-[#fcd4b4] text-[#9c3810] dark:text-amber-300 text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer shadow-2xs"
+                  >
+                    <MessageSquare className="w-4 h-4" />
+                    <span>{isEn ? `Message ${pet.creatorUserName}` : `Nhắn tin cho người đăng (${pet.creatorUserName})`}</span>
+                  </button>
+                </div>
               ) : (
-                <div className="p-3 bg-stone-100 dark:bg-stone-800 rounded-2xl text-center text-xs font-bold text-stone-500 dark:text-stone-400">
-                  {isEn ? 'This pet is already adopted or applications are paused' : 'Thú cưng này hiện đã có chủ mới hoặc tạm ngưng nhận đơn'}
+                <div className="space-y-2">
+                  <div className="p-3 bg-stone-100 dark:bg-stone-800 rounded-2xl text-center text-xs font-bold text-stone-500 dark:text-stone-400">
+                    {isEn ? 'This pet is already adopted or applications are paused' : 'Thú cưng này hiện đã có chủ mới hoặc tạm ngưng nhận đơn'}
+                  </div>
+
+                  <button
+                    onClick={handleOpenDirectChat}
+                    className="w-full py-2.5 rounded-2xl bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 text-stone-700 dark:text-stone-200 text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <MessageSquare className="w-4 h-4" />
+                    <span>{isEn ? 'Ask Poster a Question' : 'Nhắn tin hỏi thông tin người đăng'}</span>
+                  </button>
                 </div>
               )}
 
-              <button
-                onClick={() => navigate(`/reports?targetType=PET&targetId=${pet.id}`)}
-                className="w-full py-2 text-center text-[11px] font-semibold text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 transition cursor-pointer"
-              >
-                {isEn ? 'Report this post for violation' : 'Báo cáo tin đăng có dấu hiệu vi phạm'}
-              </button>
+              <div className="pt-2 flex items-center justify-between text-[11px] text-stone-400">
+                <button
+                  onClick={openReportForPet}
+                  className="hover:text-rose-600 dark:hover:text-rose-400 transition cursor-pointer flex items-center gap-1"
+                >
+                  <ShieldAlert className="w-3.5 h-3.5" />
+                  <span>{isEn ? 'Report this pet listing' : 'Báo cáo tin đăng'}</span>
+                </button>
+
+                <button
+                  onClick={openReportForUser}
+                  className="hover:text-rose-600 dark:hover:text-rose-400 transition cursor-pointer flex items-center gap-1"
+                >
+                  <Flag className="w-3.5 h-3.5" />
+                  <span>{isEn ? 'Report user account' : 'Báo cáo tài khoản'}</span>
+                </button>
+              </div>
             </div>
 
           </div>
 
           {/* Poster Profile Card */}
           <div className="bg-white dark:bg-stone-900 p-5 rounded-3xl border border-stone-200/80 dark:border-stone-800 shadow-2xs space-y-4">
-            <span className="text-[11px] font-bold text-stone-500 dark:text-stone-400 uppercase block tracking-wider">
-              {isEn ? 'Poster Profile' : 'Thông tin người đăng tin'}
-            </span>
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-bold text-stone-500 dark:text-stone-400 uppercase block tracking-wider">
+                {isEn ? 'Poster Profile' : 'Thông tin người đăng tin'}
+              </span>
+              
+              <button
+                onClick={openReportForUser}
+                className="text-[11px] font-semibold text-stone-400 hover:text-rose-500 transition cursor-pointer flex items-center gap-1"
+              >
+                <ShieldAlert className="w-3 h-3" />
+                <span>{isEn ? 'Report Account' : 'Báo cáo'}</span>
+              </button>
+            </div>
+
             <div className="flex items-center gap-3">
               <img
                 src={pet.creatorUserAvatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100'}
@@ -423,6 +480,14 @@ export const PetDetailPage: React.FC<PetDetailPageProps> = ({ petId, navigate })
                 <span className="font-bold text-stone-900 dark:text-stone-100">{isEn ? 'Within 24 hours' : 'Trong vòng 24 giờ'}</span>
               </div>
             </div>
+
+            <button
+              onClick={handleOpenDirectChat}
+              className="w-full py-2.5 rounded-2xl bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer shadow-xs hover:bg-black dark:hover:bg-white"
+            >
+              <MessageSquare className="w-3.5 h-3.5" />
+              <span>{isEn ? 'Direct Chat' : 'Gửi tin nhắn trực tiếp'}</span>
+            </button>
           </div>
 
           {/* Safety Notice */}
@@ -451,6 +516,18 @@ export const PetDetailPage: React.FC<PetDetailPageProps> = ({ petId, navigate })
             setIsAdoptionModalOpen(false);
             navigate('/applications');
           }}
+        />
+      )}
+
+      {/* REPORT MODAL */}
+      {isReportModalOpen && (
+        <ReportModal
+          isOpen={isReportModalOpen}
+          onClose={() => setIsReportModalOpen(false)}
+          targetType={reportTargetType}
+          targetId={reportTargetType === 'PET_POST' ? pet.id : pet.creatorUserId}
+          targetTitle={reportTargetType === 'PET_POST' ? `Tin đăng bé ${pet.name} (${pet.breed})` : `Tài khoản ${pet.creatorUserName}`}
+          targetUserName={pet.creatorUserName}
         />
       )}
 

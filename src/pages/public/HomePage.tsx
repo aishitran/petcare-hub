@@ -89,7 +89,12 @@ export const HomePage: React.FC<HomePageProps> = ({ navigate, onOpenAdoptionGuid
       
       {/* 1. HERO SECTION (CLASSIC 2-COLUMN: LEFT TEXT, RIGHT IMAGE) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#ffffff] via-[#fff5ed] to-[#fdebdc] dark:from-stone-900 dark:via-stone-900/90 dark:to-stone-950 border border-[#f5ded0] dark:border-stone-800/80 p-6 sm:p-10 lg:p-12 shadow-sm">
+          {/* Warm decorative background ambient highlights */}
+          <div className="absolute -top-24 -right-24 w-96 h-96 bg-amber-400/15 dark:bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-orange-400/15 dark:bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
           {/* LEFT COLUMN: TEXT, HEADINGS, CTAs & TRUST BADGES */}
           <div className="lg:col-span-7 space-y-6 text-left">
@@ -223,6 +228,7 @@ export const HomePage: React.FC<HomePageProps> = ({ navigate, onOpenAdoptionGuid
 
           </div>
 
+          </div>
         </div>
       </section>
 
