@@ -108,8 +108,8 @@ export const AdoptionProcessModal: React.FC<AdoptionProcessModalProps> = ({
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-xs animate-fade-in text-left">
-      <div className="bg-[#faf4ee] dark:bg-stone-900 rounded-3xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-[#efe2d3] dark:border-stone-800 overflow-hidden transition-colors">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fade-in text-left overflow-y-auto">
+      <div className="relative bg-[#faf4ee] dark:bg-stone-900 rounded-3xl max-w-2xl w-full max-h-[92vh] my-auto flex flex-col shadow-2xl border border-[#efe2d3] dark:border-stone-800 overflow-hidden transition-colors z-10">
         
         {/* Modal Header */}
         <div className="p-4 sm:p-5 bg-gradient-to-r from-[#fde2cd] via-[#f8eade] to-[#faefe5] dark:from-stone-950 dark:via-stone-900 dark:to-stone-950 border-b border-[#efe2d3] dark:border-stone-800 flex items-center justify-between gap-3 shrink-0">

@@ -21,11 +21,7 @@ const translationsMap: Record<Language, any> = {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [language, setLanguageState] = useState<Language>(() => {
-    const saved = localStorage.getItem('petcare_hub_lang');
-    if (saved === 'en' || saved === 'vi') return saved;
-    return 'vi';
-  });
+  const [language, setLanguageState] = useState<Language>('vi');
 
   const setLanguage = (newLang: Language) => {
     setLanguageState(newLang);
@@ -34,8 +30,10 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   useEffect(() => {
-    document.documentElement.lang = language;
-  }, [language]);
+    // Reset stored language if it was en
+    localStorage.setItem('petcare_hub_lang', 'vi');
+    document.documentElement.lang = 'vi';
+  }, []);
 
   // Deep key resolver (e.g., 'common.save', 'hero.titleMain')
   const t = (keyPath: string, fallback?: string): string => {

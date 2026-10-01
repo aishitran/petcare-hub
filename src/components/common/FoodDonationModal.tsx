@@ -147,8 +147,8 @@ export const FoodDonationModal: React.FC<FoodDonationModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-sm animate-fade-in text-left">
-      <div className="bg-white dark:bg-stone-900 rounded-3xl max-w-xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-stone-200 dark:border-stone-800 transition-colors overflow-hidden">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fade-in text-left overflow-y-auto">
+      <div className="relative bg-white dark:bg-stone-900 rounded-3xl max-w-xl w-full max-h-[90vh] my-auto flex flex-col shadow-2xl border border-stone-200 dark:border-stone-800 transition-colors overflow-hidden z-10">
         
         {/* Header */}
         <div className="p-5 border-b border-stone-100 dark:border-stone-800 flex items-center justify-between bg-stone-50/90 dark:bg-stone-950 shrink-0">

@@ -102,8 +102,8 @@ export const ReportStreetRescueModal: React.FC<ReportStreetRescueModalProps> = (
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-sm animate-fade-in text-left">
-      <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden border border-stone-200">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fade-in text-left overflow-y-auto">
+      <div className="relative bg-white dark:bg-stone-900 rounded-3xl max-w-2xl w-full max-h-[92vh] my-auto flex flex-col shadow-2xl overflow-hidden border border-stone-200 dark:border-stone-800 z-10">
         
         {/* Header */}
         <div className="p-5 sm:p-6 border-b border-stone-200 bg-rose-950 text-white flex items-start justify-between gap-4 shrink-0">

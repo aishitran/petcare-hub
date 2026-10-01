@@ -190,25 +190,31 @@ export const PetDetailPage: React.FC<PetDetailPageProps> = ({ petId, navigate })
           {/* Quick Pet Bio & Specs Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div className="p-3.5 bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/80 dark:border-stone-800 shadow-2xs text-center space-y-0.5">
-              <span className="text-[10px] text-stone-500 dark:text-stone-400 uppercase font-bold tracking-wider">{t('pets.specBreed')}</span>
+              <span className="text-[10px] text-stone-500 dark:text-stone-400 uppercase font-bold tracking-wider">{t('pets.specBreed', 'Giống loài')}</span>
               <p className="text-xs font-bold text-stone-900 dark:text-stone-100 truncate">{translatedBreed}</p>
             </div>
             
             <div className="p-3.5 bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/80 dark:border-stone-800 shadow-2xs text-center space-y-0.5">
-              <span className="text-[10px] text-stone-500 dark:text-stone-400 uppercase font-bold tracking-wider">{t('pets.specAge')}</span>
+              <span className="text-[10px] text-stone-500 dark:text-stone-400 uppercase font-bold tracking-wider">{t('pets.specAge', 'Độ tuổi')}</span>
               <p className="text-xs font-bold text-stone-900 dark:text-stone-100">{translatedAge}</p>
             </div>
 
             <div className="p-3.5 bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/80 dark:border-stone-800 shadow-2xs text-center space-y-0.5">
-              <span className="text-[10px] text-stone-500 dark:text-stone-400 uppercase font-bold tracking-wider">{t('pets.specGender')}</span>
+              <span className="text-[10px] text-stone-500 dark:text-stone-400 uppercase font-bold tracking-wider">{t('pets.specGender', 'Giới tính')}</span>
               <p className="text-xs font-bold text-stone-900 dark:text-stone-100">
                 {pet.gender === 'MALE' ? t('common.male') : t('common.female')}
               </p>
             </div>
 
             <div className="p-3.5 bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/80 dark:border-stone-800 shadow-2xs text-center space-y-0.5">
-              <span className="text-[10px] text-stone-500 dark:text-stone-400 uppercase font-bold tracking-wider">{t('pets.specSize')}</span>
-              <p className="text-xs font-bold text-stone-900 dark:text-stone-100">{pet.size || 'MEDIUM'}</p>
+              <span className="text-[10px] text-stone-500 dark:text-stone-400 uppercase font-bold tracking-wider">{t('pets.specSize', 'Kích cỡ')}</span>
+              <p className="text-xs font-bold text-stone-900 dark:text-stone-100">
+                {pet.size === 'SMALL' 
+                  ? (isEn ? 'Small (<5kg)' : 'Nhỏ (<5kg)') 
+                  : pet.size === 'LARGE' 
+                  ? (isEn ? 'Large (>15kg)' : 'Lớn (>15kg)') 
+                  : (isEn ? 'Medium (5-15kg)' : 'Vừa (5-15kg)')}
+              </p>
             </div>
           </div>
 
@@ -241,7 +247,7 @@ export const PetDetailPage: React.FC<PetDetailPageProps> = ({ petId, navigate })
           <div className="bg-white dark:bg-stone-900 p-6 rounded-3xl border border-stone-200/80 dark:border-stone-800 shadow-2xs space-y-4">
             <h3 className="font-bold text-stone-900 dark:text-stone-100 text-base flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-emerald-700 dark:text-emerald-400" />
-              <span>{t('pets.healthSection')}</span>
+              <span>{t('pets.healthSection', 'Tình trạng Sức khỏe & Y tế')}</span>
             </h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

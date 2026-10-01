@@ -210,15 +210,15 @@ export const AdminPetApprovalsPage: React.FC<AdminPetApprovalsPageProps> = ({ na
             {/* Specs & Basic Information */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <div className="p-3 bg-stone-950 rounded-2xl border border-stone-800 text-center space-y-0.5">
-                <span className="text-[10px] text-stone-400 uppercase font-bold">{t('pets.specBreed')}</span>
+                <span className="text-[10px] text-stone-400 uppercase font-bold">{t('pets.specBreed', 'Giống loài')}</span>
                 <p className="text-xs font-bold text-white truncate">{translateBreed(inspectPet.breed, language)}</p>
               </div>
               <div className="p-3 bg-stone-950 rounded-2xl border border-stone-800 text-center space-y-0.5">
-                <span className="text-[10px] text-stone-400 uppercase font-bold">{t('pets.specAge')}</span>
+                <span className="text-[10px] text-stone-400 uppercase font-bold">{t('pets.specAge', 'Độ tuổi')}</span>
                 <p className="text-xs font-bold text-white">{translateAgeDisplay(inspectPet.ageDisplay || inspectPet.age, language)}</p>
               </div>
               <div className="p-3 bg-stone-950 rounded-2xl border border-stone-800 text-center space-y-0.5">
-                <span className="text-[10px] text-stone-400 uppercase font-bold">{t('pets.specGender')}</span>
+                <span className="text-[10px] text-stone-400 uppercase font-bold">{t('pets.specGender', 'Giới tính')}</span>
                 <p className="text-xs font-bold text-white">{inspectPet.gender === 'MALE' ? t('common.male') : t('common.female')}</p>
               </div>
               <div className="p-3 bg-stone-950 rounded-2xl border border-stone-800 text-center space-y-0.5">
@@ -248,7 +248,7 @@ export const AdminPetApprovalsPage: React.FC<AdminPetApprovalsPageProps> = ({ na
 
             {/* Health Checklist */}
             <div className="space-y-2 text-xs">
-              <span className="font-bold text-teal-400 uppercase block">{t('pets.healthSection')}</span>
+              <span className="font-bold text-teal-400 uppercase block">{t('pets.healthSection', 'Tình trạng Sức khỏe & Y tế')}</span>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div className="p-3 bg-stone-950 rounded-xl border border-stone-800">
                   <span className="text-stone-400 block text-[10px]">{isEn ? 'Sterilized:' : 'Triệt sản:'}</span>

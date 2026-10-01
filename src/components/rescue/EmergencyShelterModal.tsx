@@ -62,29 +62,29 @@ export const EmergencyShelterModal: React.FC<EmergencyShelterModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-8 bg-black/75 backdrop-blur-md animate-fade-in text-left overflow-y-auto">
-      <div className="bg-stone-900 border border-stone-700/80 text-white rounded-3xl max-w-4xl w-full max-h-[86vh] my-auto flex flex-col shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 md:p-8 bg-black/80 backdrop-blur-md animate-fade-in text-left overflow-y-auto">
+      <div className="relative bg-stone-900 border border-stone-700/80 text-white rounded-3xl max-w-4xl w-full max-h-[88vh] my-auto flex flex-col shadow-2xl overflow-hidden z-10">
         
         {/* Modal Header */}
-        <div className="p-5 sm:p-6 border-b border-stone-800 bg-gradient-to-r from-[#3a150b] via-[#2c1209] to-[#1e0a04] flex items-start justify-between gap-4 shrink-0">
-          <div className="space-y-1">
-            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 text-[11px] font-bold tracking-wide uppercase border border-rose-500/30">
+        <div className="p-5 sm:p-6 border-b border-stone-800 bg-gradient-to-r from-[#421b10] via-[#2f140a] to-[#1e0a04] flex items-start justify-between gap-4 shrink-0">
+          <div className="space-y-1.5">
+            <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-rose-500/20 text-rose-300 text-[11px] font-bold tracking-wide uppercase border border-rose-500/40">
               <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
-              {t('emergency.modalTag')}
+              <span>{t('emergency.modalTag', 'ĐƯỜNG DÂY NÓNG CỨU TRỢ KHẨN CẤP 24/7')}</span>
             </div>
             <h2 className="text-xl sm:text-2xl font-black font-display text-white">
-              {t('emergency.modalTitle')}
+              {t('emergency.modalTitle', 'Danh bạ Trạm Cứu Hộ & Hotline Cứu Trợ')}
             </h2>
             <p className="text-xs sm:text-sm text-stone-300">
-              {t('emergency.modalSubtitle')}
+              {t('emergency.modalSubtitle', 'Tra cứu nhanh số điện thoại và địa chỉ chính xác của các trạm cứu hộ phi lợi nhuận.')}
             </p>
           </div>
 
           <button
             type="button"
             onClick={onClose}
-            className="p-2 rounded-xl bg-stone-800/80 hover:bg-stone-700 text-stone-300 hover:text-white transition cursor-pointer"
-            aria-label={t('common.close')}
+            className="p-2 rounded-xl bg-stone-800/90 hover:bg-stone-700 text-stone-300 hover:text-white transition cursor-pointer shrink-0 shadow-xs"
+            aria-label={t('common.close', 'Đóng')}
           >
             <X className="w-5 h-5" />
           </button>
