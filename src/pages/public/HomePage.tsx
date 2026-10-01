@@ -7,8 +7,6 @@ import { RescueCard } from '../../components/user/RescueCard';
 import { AdoptionWizardModal } from '../../components/user/AdoptionWizardModal';
 import { FoodFundDonationSection } from '../../components/common/FoodFundDonationSection';
 import { EmergencyRescueBanner } from '../../components/rescue/EmergencyRescueBanner';
-import { EmergencyShelterModal } from '../../components/rescue/EmergencyShelterModal';
-import { ReportStreetRescueModal } from '../../components/rescue/ReportStreetRescueModal';
 import { Pet } from '../../types/pet';
 import { RescuePost } from '../../types/rescue';
 import { 
@@ -48,10 +46,6 @@ export const HomePage: React.FC<HomePageProps> = ({ navigate, onOpenAdoptionGuid
   const [selectedRescueForSupport, setSelectedRescueForSupport] = useState<RescuePost | null>(null);
   const [supportMessage, setSupportMessage] = useState('');
   const [supportSuccess, setSupportSuccess] = useState(false);
-  
-  // Emergency Rescue modals
-  const [shelterModalOpen, setShelterModalOpen] = useState(false);
-  const [reportStreetModalOpen, setReportStreetModalOpen] = useState(false);
   
   // Anti-dog/cat meat pledge campaign state
   const [hasPledged, setHasPledged] = useState(false);
@@ -234,8 +228,8 @@ export const HomePage: React.FC<HomePageProps> = ({ navigate, onOpenAdoptionGuid
 
       {/* 1.5. EMERGENCY RESCUE & 24/7 SHELTER DISPATCH (TOP PRIORITY) */}
       <EmergencyRescueBanner
-        onOpenDirectory={() => setShelterModalOpen(true)}
-        onReportStreetRescue={() => setReportStreetModalOpen(true)}
+        onOpenDirectory={() => window.dispatchEvent(new CustomEvent('open-emergency-shelter'))}
+        onReportStreetRescue={() => window.dispatchEvent(new CustomEvent('open-street-rescue-sos'))}
       />
 
       {/* 2. STATS BANNER */}
@@ -669,27 +663,6 @@ export const HomePage: React.FC<HomePageProps> = ({ navigate, onOpenAdoptionGuid
           </div>
         </div>
       )}
-
-      {/* Emergency Shelter Directory Modal */}
-      <EmergencyShelterModal
-        isOpen={shelterModalOpen}
-        onClose={() => setShelterModalOpen(false)}
-        onReportStreetIncident={() => {
-          setShelterModalOpen(false);
-          setReportStreetModalOpen(true);
-        }}
-      />
-
-      {/* Rapid Street Rescue SOS Report Modal */}
-      <ReportStreetRescueModal
-        isOpen={reportStreetModalOpen}
-        onClose={() => setReportStreetModalOpen(false)}
-        onSuccessNavigate={(rescueId) => navigate(`/rescue/${rescueId}`)}
-        onOpenDirectory={() => {
-          setReportStreetModalOpen(false);
-          setShelterModalOpen(true);
-        }}
-      />
 
     </div>
   );

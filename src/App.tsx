@@ -11,6 +11,8 @@ import { UserLayout } from './components/layout/UserLayout';
 import { AdminLayout } from './components/layout/AdminLayout';
 import { FloatingChatWidget } from './components/chat/FloatingChatWidget';
 import { AdoptionProcessModal } from './components/common/AdoptionProcessModal';
+import { EmergencyShelterModal } from './components/rescue/EmergencyShelterModal';
+import { ReportStreetRescueModal } from './components/rescue/ReportStreetRescueModal';
 
 // Public Pages
 import { HomePage } from './pages/public/HomePage';
@@ -52,6 +54,26 @@ const AppContent: React.FC = () => {
   const [isAdoptionGuideOpen, setIsAdoptionGuideOpen] = useState<boolean>(() => {
     return localStorage.getItem('petcare_hide_adoption_onboarding') !== 'true';
   });
+  const [isEmergencyShelterOpen, setIsEmergencyShelterOpen] = useState(false);
+  const [isReportStreetRescueOpen, setIsReportStreetRescueOpen] = useState(false);
+
+  // Global event listeners for SOS & Emergency modals
+  useEffect(() => {
+    const handleOpenEmergencyShelter = () => {
+      setIsEmergencyShelterOpen(true);
+    };
+    const handleOpenStreetRescueSos = () => {
+      setIsReportStreetRescueOpen(true);
+    };
+
+    window.addEventListener('open-emergency-shelter', handleOpenEmergencyShelter);
+    window.addEventListener('open-street-rescue-sos', handleOpenStreetRescueSos);
+
+    return () => {
+      window.removeEventListener('open-emergency-shelter', handleOpenEmergencyShelter);
+      window.removeEventListener('open-street-rescue-sos', handleOpenStreetRescueSos);
+    };
+  }, []);
 
   // Scroll to top on navigation
   useEffect(() => {
@@ -121,7 +143,13 @@ const AppContent: React.FC = () => {
         <div className="flex-1 flex flex-col justify-between">
           <div className="sticky top-0 z-50 w-full shrink-0 shadow-xs bg-[#faf4ee]/95 dark:bg-[#1e1c24]/95 backdrop-blur-md">
             <DemoRoleBar />
-            <Header currentPath={currentPath} navigate={navigate} onOpenAdoptionGuide={() => setIsAdoptionGuideOpen(true)} />
+            <Header 
+              currentPath={currentPath} 
+              navigate={navigate} 
+              onOpenAdoptionGuide={() => setIsAdoptionGuideOpen(true)}
+              onOpenEmergencyHotline={() => setIsEmergencyShelterOpen(true)}
+              onOpenReportStreetSos={() => setIsReportStreetRescueOpen(true)}
+            />
           </div>
           
           <main className="flex-1">
@@ -148,7 +176,13 @@ const AppContent: React.FC = () => {
         <div className="flex-1 flex flex-col justify-between">
           <div className="sticky top-0 z-50 w-full shrink-0 shadow-xs bg-[#faf4ee]/95 dark:bg-[#1e1c24]/95 backdrop-blur-md">
             <DemoRoleBar />
-            <Header currentPath={currentPath} navigate={navigate} onOpenAdoptionGuide={() => setIsAdoptionGuideOpen(true)} />
+            <Header 
+              currentPath={currentPath} 
+              navigate={navigate} 
+              onOpenAdoptionGuide={() => setIsAdoptionGuideOpen(true)}
+              onOpenEmergencyHotline={() => setIsEmergencyShelterOpen(true)}
+              onOpenReportStreetSos={() => setIsReportStreetRescueOpen(true)}
+            />
           </div>
 
           <main className="flex-1">
@@ -175,6 +209,30 @@ const AppContent: React.FC = () => {
         onExplorePets={() => {
           setIsAdoptionGuideOpen(false);
           navigate('/pets');
+        }}
+      />
+
+      {/* Emergency Shelter Directory Modal (Root Level) */}
+      <EmergencyShelterModal
+        isOpen={isEmergencyShelterOpen}
+        onClose={() => setIsEmergencyShelterOpen(false)}
+        onReportStreetIncident={() => {
+          setIsEmergencyShelterOpen(false);
+          setIsReportStreetRescueOpen(true);
+        }}
+      />
+
+      {/* Rapid Street Rescue SOS Report Modal (Root Level) */}
+      <ReportStreetRescueModal
+        isOpen={isReportStreetRescueOpen}
+        onClose={() => setIsReportStreetRescueOpen(false)}
+        onSuccessNavigate={(rescueId) => {
+          setIsReportStreetRescueOpen(false);
+          navigate(`/rescue/${rescueId}`);
+        }}
+        onOpenDirectory={() => {
+          setIsReportStreetRescueOpen(false);
+          setIsEmergencyShelterOpen(true);
         }}
       />
 

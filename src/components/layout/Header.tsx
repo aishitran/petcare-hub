@@ -21,17 +21,23 @@ import {
   ChevronDown,
   PhoneCall
 } from 'lucide-react';
-import { EmergencyShelterModal } from '../rescue/EmergencyShelterModal';
-import { ReportStreetRescueModal } from '../rescue/ReportStreetRescueModal';
 import { LanguageSwitcher } from '../common/LanguageSwitcher';
 
 interface HeaderProps {
   currentPath: string;
   navigate: (path: string) => void;
   onOpenAdoptionGuide?: () => void;
+  onOpenEmergencyHotline?: () => void;
+  onOpenReportStreetSos?: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ currentPath, navigate, onOpenAdoptionGuide }) => {
+export const Header: React.FC<HeaderProps> = ({ 
+  currentPath, 
+  navigate, 
+  onOpenAdoptionGuide,
+  onOpenEmergencyHotline,
+  onOpenReportStreetSos
+}) => {
   const { role, currentUser, logout } = useAuth();
   const { notifications, markNotificationRead } = useData();
   const { language, t } = useLanguage();
@@ -39,8 +45,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, navigate, onOpenAdo
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [notifDropdownOpen, setNotifDropdownOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const [shelterModalOpen, setShelterModalOpen] = useState(false);
-  const [reportStreetModalOpen, setReportStreetModalOpen] = useState(false);
 
   const unreadNotifs = notifications.filter(n => !n.read);
 
@@ -115,7 +119,13 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, navigate, onOpenAdo
             
             {/* 24/7 SOS Emergency Hotline Button */}
             <button
-              onClick={() => setShelterModalOpen(true)}
+              onClick={() => {
+                if (onOpenEmergencyHotline) {
+                  onOpenEmergencyHotline();
+                } else {
+                  window.dispatchEvent(new CustomEvent('open-emergency-shelter'));
+                }
+              }}
               className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#fde8e8] dark:bg-rose-950/40 hover:bg-[#fbd5d5] dark:hover:bg-rose-900/40 text-[#c53030] dark:text-rose-300 border border-[#f8b4b4] dark:border-rose-800/60 text-xs font-bold transition shadow-2xs cursor-pointer group"
               title={t('emergency.bannerDesc')}
             >
@@ -322,7 +332,14 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, navigate, onOpenAdo
 
           {/* Mobile SOS Emergency Rescue Button */}
           <button
-            onClick={() => { setMobileMenuOpen(false); setShelterModalOpen(true); }}
+            onClick={() => { 
+              setMobileMenuOpen(false); 
+              if (onOpenEmergencyHotline) {
+                onOpenEmergencyHotline();
+              } else {
+                window.dispatchEvent(new CustomEvent('open-emergency-shelter'));
+              }
+            }}
             className="w-full flex items-center justify-between px-4 py-3 rounded-2xl bg-rose-600 text-white font-bold text-xs shadow-sm cursor-pointer"
           >
             <span className="flex items-center gap-2">
@@ -414,27 +431,6 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, navigate, onOpenAdo
           )}
         </div>
       )}
-
-      {/* Emergency Shelter Directory Modal */}
-      <EmergencyShelterModal
-        isOpen={shelterModalOpen}
-        onClose={() => setShelterModalOpen(false)}
-        onReportStreetIncident={() => {
-          setShelterModalOpen(false);
-          setReportStreetModalOpen(true);
-        }}
-      />
-
-      {/* Rapid Street Rescue SOS Report Modal */}
-      <ReportStreetRescueModal
-        isOpen={reportStreetModalOpen}
-        onClose={() => setReportStreetModalOpen(false)}
-        onSuccessNavigate={(rescueId) => handleNav(`/rescue/${rescueId}`)}
-        onOpenDirectory={() => {
-          setReportStreetModalOpen(false);
-          setShelterModalOpen(true);
-        }}
-      />
 
     </header>
   );

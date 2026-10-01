@@ -7,8 +7,6 @@ import { RescueCenterCard } from '../../components/rescue/RescueCenterCard';
 import { RescueCenterDetailModal } from '../../components/rescue/RescueCenterDetailModal';
 import { FoodFundDonationSection } from '../../components/common/FoodFundDonationSection';
 import { EmergencyRescueBanner } from '../../components/rescue/EmergencyRescueBanner';
-import { EmergencyShelterModal } from '../../components/rescue/EmergencyShelterModal';
-import { ReportStreetRescueModal } from '../../components/rescue/ReportStreetRescueModal';
 import { mockEmergencyShelters } from '../../data/mockEmergencyShelters';
 import { EmergencyShelter, RescueCenterType, RescueCenterStatus, SupportedAnimal } from '../../types/shelter';
 import { RescuePost } from '../../types/rescue';
@@ -59,10 +57,6 @@ export const RescueListingPage: React.FC<RescueListingPageProps> = ({ navigate }
   const [selectedRescueForSupport, setSelectedRescueForSupport] = useState<RescuePost | null>(null);
   const [supportMessage, setSupportMessage] = useState('');
   const [supportSuccess, setSupportSuccess] = useState(false);
-
-  // Emergency rescue modals
-  const [shelterModalOpen, setShelterModalOpen] = useState(false);
-  const [reportStreetModalOpen, setReportStreetModalOpen] = useState(false);
 
   // Filtered Rescue Centers
   const filteredCenters = useMemo(() => {
@@ -156,7 +150,7 @@ export const RescueListingPage: React.FC<RescueListingPageProps> = ({ navigate }
 
         <div className="flex items-center gap-2.5 flex-wrap">
           <button
-            onClick={() => setShelterModalOpen(true)}
+            onClick={() => window.dispatchEvent(new CustomEvent('open-emergency-shelter'))}
             className="px-4 py-2.5 rounded-2xl bg-rose-50 dark:bg-rose-950/60 hover:bg-rose-100 dark:hover:bg-rose-900/60 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800 font-bold text-xs shadow-xs transition flex items-center gap-1.5 cursor-pointer"
           >
             <span className="w-2 h-2 rounded-full bg-rose-600 animate-pulse" />
@@ -180,8 +174,8 @@ export const RescueListingPage: React.FC<RescueListingPageProps> = ({ navigate }
 
       {/* TOP EMERGENCY RESCUE BANNER & 24/7 HOTLINES */}
       <EmergencyRescueBanner
-        onOpenDirectory={() => setShelterModalOpen(true)}
-        onReportStreetRescue={() => setReportStreetModalOpen(true)}
+        onOpenDirectory={() => window.dispatchEvent(new CustomEvent('open-emergency-shelter'))}
+        onReportStreetRescue={() => window.dispatchEvent(new CustomEvent('open-street-rescue-sos'))}
       />
 
       {/* FOOD FUND & ESSENTIAL SUPPLIES SECTION */}
@@ -463,30 +457,6 @@ export const RescueListingPage: React.FC<RescueListingPageProps> = ({ navigate }
         center={selectedCenterForDetail}
         isOpen={!!selectedCenterForDetail}
         onClose={() => setSelectedCenterForDetail(null)}
-      />
-
-      {/* EMERGENCY SHELTER DIRECTORY MODAL */}
-      <EmergencyShelterModal
-        isOpen={shelterModalOpen}
-        onClose={() => setShelterModalOpen(false)}
-        onReportStreetIncident={() => {
-          setShelterModalOpen(false);
-          setReportStreetModalOpen(true);
-        }}
-      />
-
-      {/* REPORT STREET RESCUE (SOS) MODAL */}
-      <ReportStreetRescueModal
-        isOpen={reportStreetModalOpen}
-        onClose={() => setReportStreetModalOpen(false)}
-        onOpenDirectory={() => {
-          setReportStreetModalOpen(false);
-          setShelterModalOpen(true);
-        }}
-        onSuccessNavigate={(id) => {
-          setReportStreetModalOpen(false);
-          navigate(`/rescue/${id}`);
-        }}
       />
 
       {/* SUPPORT RESCUE CASE MODAL */}

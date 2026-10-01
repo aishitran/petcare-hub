@@ -454,7 +454,7 @@ export const FloatingChatWidget: React.FC = () => {
                         }`}
                       >
                         {msg.sender === 'AGENT' && (
-                          <img src="/logo.png" alt="" className="w-7 h-7 rounded-full object-cover shrink-0 mt-0.5 shadow-2xs ring-1 ring-[#f5b88c]" />
+                          <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" className="w-7 h-7 rounded-full object-cover shrink-0 mt-0.5 shadow-2xs ring-1 ring-[#f5b88c]" />
                         )}
 
                         <div
@@ -497,7 +497,7 @@ export const FloatingChatWidget: React.FC = () => {
                     {/* Typing Indicator */}
                     {isAssistantTyping && (
                       <div className="flex items-start gap-2 text-xs">
-                        <img src="/logo.png" alt="" className="w-7 h-7 rounded-full object-cover shrink-0 mt-0.5 shadow-2xs ring-1 ring-[#f5b88c]" />
+                        <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" className="w-7 h-7 rounded-full object-cover shrink-0 mt-0.5 shadow-2xs ring-1 ring-[#f5b88c]" />
                         <div className="p-3 bg-white dark:bg-stone-800 border border-[#efe2d3] dark:border-stone-700 rounded-2xl rounded-tl-xs shadow-2xs space-y-1">
                           <div className="flex items-center gap-1 text-[11px] text-stone-500 dark:text-stone-400 font-medium">
                             <span className="w-2 h-2 rounded-full bg-[#d46b28] animate-bounce" />
