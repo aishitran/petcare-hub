@@ -2,7 +2,7 @@
 
 > **PetCare Hub** là nền tảng kết nối giữa người nhận nuôi, chủ cứu hộ và mạng lưới các trạm bảo trợ động vật trên toàn quốc. Dự án hướng đến việc hỗ trợ cứu nạn khẩn cấp, minh bạch hóa quy trình nhận nuôi, kết nối nguồn lực tiếp sức trạm cứu hộ và nâng cao nhận thức bảo vệ động vật.
 
-Dự án sử dụng cấu trúc **Monorepo Microservices**, phân tách rõ ràng giữa **Frontend (React 19)** và **Backend (API Gateway & Microservices)**.
+Dự án sử dụng cấu trúc **Monorepo Microservices**.
 
 ---
 
