@@ -106,16 +106,16 @@ export const ReportStreetRescueModal: React.FC<ReportStreetRescueModalProps> = (
       <div className="relative bg-white dark:bg-stone-900 rounded-3xl max-w-2xl w-full max-h-[92vh] my-auto flex flex-col shadow-2xl overflow-hidden border border-stone-200 dark:border-stone-800 z-10">
         
         {/* Header */}
-        <div className="p-5 sm:p-6 border-b border-stone-200 bg-rose-950 text-white flex items-start justify-between gap-4 shrink-0">
+        <div className="p-5 sm:p-6 border-b border-rose-600/40 bg-gradient-to-r from-[#e03131] via-[#c92a2a] to-[#a61e1e] text-white flex items-start justify-between gap-4 shrink-0 shadow-xs">
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-rose-500/30 text-rose-200 text-[11px] font-bold tracking-wide uppercase border border-rose-400/30">
-              <span className="w-2 h-2 rounded-full bg-rose-400 animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-white/20 text-white text-[11px] font-bold tracking-wide uppercase border border-white/30 backdrop-blur-xs">
+              <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
               {t('emergency.reportModalTag')}
             </div>
             <h2 className="text-xl sm:text-2xl font-black font-display text-white">
               {t('emergency.reportModalTitle')}
             </h2>
-            <p className="text-xs sm:text-sm text-stone-300">
+            <p className="text-xs sm:text-sm text-rose-100/90">
               {t('emergency.reportModalSub')}
             </p>
           </div>
@@ -123,7 +123,7 @@ export const ReportStreetRescueModal: React.FC<ReportStreetRescueModalProps> = (
           <button
             type="button"
             onClick={handleResetAndClose}
-            className="p-2 rounded-xl bg-stone-800/80 hover:bg-stone-700 text-stone-300 hover:text-white transition cursor-pointer"
+            className="p-2 rounded-xl bg-white/20 hover:bg-white/30 text-white transition cursor-pointer shrink-0 shadow-xs"
             aria-label={t('common.close')}
           >
             <X className="w-5 h-5" />

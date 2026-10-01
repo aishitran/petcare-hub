@@ -259,56 +259,63 @@ export const HomePage: React.FC<HomePageProps> = ({ navigate, onOpenAdoptionGuid
 
       {/* 2.5. ADVOCACY CAMPAIGN BANNER: NO EATING DOG & CAT MEAT */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-3xl bg-[#2c1209] text-white shadow-md border border-amber-500/20">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#9e3a13] via-[#852c08] to-[#5e1903] text-white shadow-xl border border-amber-300/30">
           
+          {/* Luminous Glow Overlays */}
+          <div className="absolute top-0 right-0 w-96 h-96 bg-amber-400/15 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-rose-500/15 rounded-full blur-3xl pointer-events-none" />
+
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center p-6 sm:p-10 lg:p-11 relative z-10">
             
             {/* Left Column: Core Campaign Messages & CTA */}
             <div className="lg:col-span-7 space-y-5 text-left">
               
               {/* Campaign Badge */}
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-800/90 border border-stone-700 text-stone-300 text-[11px] font-medium tracking-wide uppercase">
-                <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 border border-white/25 text-amber-200 text-[11px] font-bold tracking-wide uppercase shadow-xs backdrop-blur-xs">
+                <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse" />
                 <span>{t('campaign.badge')}</span>
               </div>
 
               {/* Main Headline */}
               <div className="space-y-2">
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black font-display text-white leading-snug">
-                  {t('campaign.title1')} <span className="text-rose-300">{t('campaign.titleHighlight')}</span>
+                  {t('campaign.title1')} <span className="text-rose-200 underline decoration-rose-300/60 decoration-wavy underline-offset-4">{t('campaign.titleHighlight')}</span>
                   <br />
                   <span className="text-amber-300 text-xl sm:text-2xl font-bold">{t('campaign.title2')}</span>
                 </h2>
-                <p className="text-xs sm:text-sm text-stone-300 leading-relaxed font-normal">
+                <p className="text-xs sm:text-sm text-amber-100/90 leading-relaxed font-normal">
                   {t('campaign.desc')}
                 </p>
               </div>
 
               {/* 3 Pillars of Campaign */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
-                <div className="bg-black/25 border border-white/10 p-3.5 rounded-xl space-y-1">
-                  <div className="text-stone-100 font-bold text-xs">
-                    {t('campaign.pillar1Title')}
+                <div className="bg-white/12 hover:bg-white/18 border border-white/20 p-3.5 rounded-2xl space-y-1 shadow-xs transition backdrop-blur-xs">
+                  <div className="text-white font-bold text-xs flex items-center gap-1.5">
+                    <span className="text-amber-300 font-extrabold">✓</span>
+                    <span>{t('campaign.pillar1Title')}</span>
                   </div>
-                  <p className="text-[11px] text-stone-300 leading-normal">
+                  <p className="text-[11px] text-amber-100/80 leading-normal">
                     {t('campaign.pillar1Desc')}
                   </p>
                 </div>
 
-                <div className="bg-black/25 border border-white/10 p-3.5 rounded-xl space-y-1">
-                  <div className="text-stone-100 font-bold text-xs">
-                    {t('campaign.pillar2Title')}
+                <div className="bg-white/12 hover:bg-white/18 border border-white/20 p-3.5 rounded-2xl space-y-1 shadow-xs transition backdrop-blur-xs">
+                  <div className="text-white font-bold text-xs flex items-center gap-1.5">
+                    <span className="text-amber-300 font-extrabold">✓</span>
+                    <span>{t('campaign.pillar2Title')}</span>
                   </div>
-                  <p className="text-[11px] text-stone-300 leading-normal">
+                  <p className="text-[11px] text-amber-100/80 leading-normal">
                     {t('campaign.pillar2Desc')}
                   </p>
                 </div>
 
-                <div className="bg-black/25 border border-white/10 p-3.5 rounded-xl space-y-1">
-                  <div className="text-stone-100 font-bold text-xs">
-                    {t('campaign.pillar3Title')}
+                <div className="bg-white/12 hover:bg-white/18 border border-white/20 p-3.5 rounded-2xl space-y-1 shadow-xs transition backdrop-blur-xs">
+                  <div className="text-white font-bold text-xs flex items-center gap-1.5">
+                    <span className="text-amber-300 font-extrabold">✓</span>
+                    <span>{t('campaign.pillar3Title')}</span>
                   </div>
-                  <p className="text-[11px] text-stone-300 leading-normal">
+                  <p className="text-[11px] text-amber-100/80 leading-normal">
                     {t('campaign.pillar3Desc')}
                   </p>
                 </div>
@@ -319,44 +326,48 @@ export const HomePage: React.FC<HomePageProps> = ({ navigate, onOpenAdoptionGuid
                 <button
                   onClick={handlePledge}
                   disabled={hasPledged}
-                  className={`px-5 py-3 rounded-xl font-bold text-xs sm:text-sm transition ${
+                  className={`px-6 py-3.5 rounded-2xl font-black text-xs sm:text-sm transition shadow-lg ${
                     hasPledged
-                      ? 'bg-amber-500 text-stone-950 cursor-default'
-                      : 'bg-rose-600 hover:bg-rose-500 text-white cursor-pointer'
+                      ? 'bg-amber-400 text-stone-950 cursor-default ring-2 ring-amber-300'
+                      : 'bg-rose-600 hover:bg-rose-500 text-white cursor-pointer hover:shadow-rose-600/30'
                   }`}
                 >
-                  {hasPledged ? t('campaign.pledgedBtn') : t('campaign.pledgeBtn')}
+                  {hasPledged ? `✓ ${t('campaign.pledgedBtn')}` : t('campaign.pledgeBtn')}
                 </button>
 
                 <button
                   onClick={() => navigate('/reports')}
-                  className="px-4 py-3 rounded-xl bg-black/30 hover:bg-black/50 border border-white/20 text-stone-200 text-xs font-medium hover:text-white transition cursor-pointer"
+                  className="px-5 py-3.5 rounded-2xl bg-white/15 hover:bg-white/25 border border-white/30 text-white text-xs font-bold hover:text-white transition shadow-xs cursor-pointer backdrop-blur-xs"
                 >
                   {t('campaign.reportPointBtn')}
                 </button>
               </div>
 
               {/* Live Counter */}
-              <div className="text-xs text-stone-300 pt-0.5">
-                <span className="text-amber-400 font-bold">{pledgeCount.toLocaleString('vi-VN')}</span> {t('campaign.pledgeCounter')}
+              <div className="text-xs text-amber-200/90 pt-0.5 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span><strong className="text-amber-300 font-bold text-sm">{pledgeCount.toLocaleString('vi-VN')}</strong> {t('campaign.pledgeCounter')}</span>
               </div>
 
             </div>
 
             {/* Right Column: High-Res Visual Graphic */}
             <div className="lg:col-span-5 relative">
-              <div className="relative mx-auto rounded-2xl overflow-hidden shadow-lg border border-white/10">
+              <div className="relative mx-auto rounded-3xl overflow-hidden shadow-2xl border-2 border-white/20 bg-stone-900">
                 <img
-                  src="/campaign-banner.jpg"
+                  src={`${import.meta.env.BASE_URL}campaign-banner.jpg`}
                   alt="Say No to Dog and Cat Meat - Pets Are Family Not Food"
-                  className="w-full h-80 sm:h-96 object-cover"
+                  className="w-full h-80 sm:h-96 object-cover hover:scale-105 transition-transform duration-500"
+                  onError={(e) => {
+                    e.currentTarget.src = 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=1200&auto=format&fit=crop';
+                  }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent pointer-events-none" />
                 
                 {/* Bottom Caption */}
-                <div className="absolute bottom-4 left-4 right-4 bg-black/70 backdrop-blur-md p-3.5 rounded-xl border border-white/10 text-white text-left space-y-0.5">
-                  <div className="text-xs font-bold text-stone-100">{t('campaign.imgCaptionTitle')}</div>
-                  <p className="text-[11px] text-stone-300 leading-tight">
+                <div className="absolute bottom-4 left-4 right-4 bg-black/75 backdrop-blur-md p-4 rounded-2xl border border-white/20 text-white text-left space-y-1">
+                  <div className="text-xs font-bold text-amber-300">{t('campaign.imgCaptionTitle')}</div>
+                  <p className="text-[11px] text-stone-200 leading-snug">
                     {t('campaign.imgCaptionDesc')}
                   </p>
                 </div>
@@ -367,7 +378,7 @@ export const HomePage: React.FC<HomePageProps> = ({ navigate, onOpenAdoptionGuid
 
           {/* Toast on pledge click */}
           {showPledgeToast && (
-            <div className="absolute bottom-4 right-4 z-30 bg-stone-900 text-white px-5 py-3 rounded-xl shadow-xl border border-amber-500/40 text-left text-xs">
+            <div className="absolute bottom-4 right-4 z-30 bg-stone-900 text-white px-5 py-3 rounded-2xl shadow-2xl border border-amber-400 text-left text-xs animate-bounce">
               <div className="font-bold text-amber-300">{t('campaign.pledgeToastTitle')}</div>
               <div className="text-[11px] text-stone-300">{t('campaign.pledgeToastDesc')}</div>
             </div>
@@ -409,7 +420,7 @@ export const HomePage: React.FC<HomePageProps> = ({ navigate, onOpenAdoptionGuid
       </section>
 
       {/* 4. RESCUE SOS SECTION */}
-      <section className="bg-[#2c1209] text-white py-12 px-6 sm:px-10 rounded-3xl max-w-7xl mx-auto shadow-sm space-y-6 border border-amber-500/20">
+      <section className="bg-gradient-to-r from-[#8f2d08] via-[#752104] to-[#541602] text-white py-12 px-6 sm:px-10 rounded-3xl max-w-7xl mx-auto shadow-md space-y-6 border border-amber-400/30">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
             <span className="text-xs font-bold uppercase tracking-wider text-rose-300">{t('rescue.tag')}</span>
